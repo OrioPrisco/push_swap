@@ -25,7 +25,7 @@ int	vector_allocate(t_vector *vector, size_t size)
 	if (size == 0)
 		size = 1;
 	vector->size = 0;
-	vector->data = malloc(DEFAULT_VECTOR_SIZE * sizeof(*vector->data));
+	vector->data = malloc(size * sizeof(*vector->data));
 	if (!vector->data)
 		return (1);
 	vector->malloced_size = size;

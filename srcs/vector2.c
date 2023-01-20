@@ -26,12 +26,8 @@ t_vector_data	vector_pop(t_vector *vector, size_t index)
 
 int	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 {
-	if (vector->malloced_size == 0)
-		if (vector_allocate(vector, DEFAULT_VECTOR_SIZE))
-			return (1);
-	if (vector->size == vector->malloced_size)
-		if (vector_grow(vector))
-			return (1);
+	if (vector_maybe_grow(vector))
+		return (0);
 	ft_memmove(vector->data + index + 1, vector->data + index,
 		(vector->size - index) * sizeof(*vector->data));
 	vector->data[index] = data;

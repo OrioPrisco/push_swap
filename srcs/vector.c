@@ -34,12 +34,8 @@ int	vector_allocate(t_vector *vector, size_t size)
 
 int	vector_append(t_vector *vector, t_vector_data data)
 {
-	if (vector->malloced_size == 0)
-		if (vector_allocate(vector, DEFAULT_VECTOR_SIZE))
-			return (1);
-	if (vector->size == vector->malloced_size)
-		if (vector_grow(vector))
-			return (1);
+	if (vector_maybe_grow(vector))
+		return (1);
 	vector->data[vector->size] = data;
 	vector->size++;
 	return (0);
@@ -53,10 +49,14 @@ void	vector_clear(t_vector *vector)
 	vector->malloced_size = 0;
 }
 
-int	vector_grow(t_vector *vector)
+int	vector_maybe_grow(t_vector *vector)
 {
 	t_vector_data	*new_data;
 
+	if (vector->malloced_size == 0)
+		return (vector_allocate(vector, DEFAULT_VECTOR_SIZE));
+	if (vector->size != vector->malloced_size)
+		return (0);
 	new_data = malloc(vector->malloced_size * sizeof(*vector->data) * 2);
 	if (!new_data)
 		return (1);

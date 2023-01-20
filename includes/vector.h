@@ -32,4 +32,7 @@ int				vector_grow(t_vector *vector);
 t_vector_data	vector_pop(t_vector *vector, size_t index);
 int				vector_insert(t_vector *vector, size_t index,
 					t_vector_data data);
+int				vector_copy(t_vector *src, t_vector *dest);
+void			vector_sort(t_vector *vector);
+
 #endif

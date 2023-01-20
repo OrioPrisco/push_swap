@@ -13,6 +13,8 @@
 CC				=	cc
 
 SRC				=	main.c\
+					vector.c\
+					vector2.c\
 
 NAME			=	push_swap
 

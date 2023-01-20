@@ -1,0 +1,6 @@
+*.o
+*.d
+push_swap
+*.swp
+*.swo
+

@@ -13,30 +13,28 @@
 #include "vector.h"
 #include "libft.h"
 #include "ft_printf.h"
+#include "sort.h"
+#include "debug.h"
 
 int	main(int argc, char **argv)
 {
 	t_vector	vector;
-	t_vector	vector2;
+	t_vector	stack_ops;
 	int			i;
 
 	i = 1;
 	vector_init(&vector);
+	vector_init(&stack_ops);
 	while (i < argc)
 	{
-		if (vector_insert(&vector, 0, ft_atoi(argv[i])))
+		if (vector_append(&vector, ft_atoi(argv[i])))
 			return (1);
 		i++;
 	}
-	if (vector_copy(&vector2, &vector))
-		return (vector_clear(&vector), 1);
-	vector_sort(&vector2);
-	while (vector.size)
-	{
-		ft_printf("[%5d] [%5d]\n", vector_pop(&vector2, 0),
-			vector_pop(&vector, 0));
-	}
+	if (sort3(&vector, &stack_ops, 0))
+		return (1);
+	print_stack_ops(&stack_ops);
 	vector_clear(&vector);
-	vector_clear(&vector2);
+	vector_clear(&stack_ops);
 	return (0);
 }

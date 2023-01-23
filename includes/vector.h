@@ -28,7 +28,7 @@ void			vector_init(t_vector *vector);
 int				vector_allocate(t_vector *vector, size_t size);
 int				vector_append(t_vector *vector, t_vector_data data);
 void			vector_clear(t_vector *vector);
-int				vector_grow(t_vector *vector);
+int				vector_maybe_grow(t_vector *vector);
 t_vector_data	vector_pop(t_vector *vector, size_t index);
 int				vector_insert(t_vector *vector, size_t index,
 					t_vector_data data);

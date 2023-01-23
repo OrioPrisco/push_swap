@@ -15,6 +15,9 @@ CC				=	cc
 SRC				=	main.c\
 					vector.c\
 					vector2.c\
+					order.c\
+					sort3.c\
+					debug.c\
 
 NAME			=	push_swap
 

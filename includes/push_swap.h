@@ -13,6 +13,17 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+# include "push_swap.h"
+
+typedef struct s_env
+{
+	t_vector	a;
+	t_vector	b;
+	t_vector	ps_ops;
+	t_vector	stack_ops_a;
+	t_vector	stack_ops_b;
+}	t_env;
+
 typedef enum e_stack_ops
 {
 	ROTATE_UP,
@@ -36,4 +47,6 @@ typedef enum e_ps_ops
 	RRR,
 }	t_ps_ops;
 
+int		init_env(int argc, char **argv, t_env *env);
+void	destroy_env(t_env *env);
 #endif

@@ -18,12 +18,13 @@ SRC				=	main.c\
 					order.c\
 					sort3.c\
 					debug.c\
+					env.c\
 
 NAME			=	push_swap
 
 OBJ_FOLDER		=	objs/
 
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror -g
 
 SRC_FOLDER		=	srcs/
 

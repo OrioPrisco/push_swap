@@ -15,26 +15,20 @@
 #include "ft_printf.h"
 #include "sort.h"
 #include "debug.h"
+#include "push_swap.h"
 
 int	main(int argc, char **argv)
 {
-	t_vector	vector;
-	t_vector	stack_ops;
-	int			i;
+	t_env	env;
 
-	i = 1;
-	vector_init(&vector);
-	vector_init(&stack_ops);
-	while (i < argc)
-	{
-		if (vector_append(&vector, ft_atoi(argv[i])))
-			return (1);
-		i++;
-	}
-	if (sort3(&vector, &stack_ops, 0))
+	if (argc < 2)
+		return (0);
+	if (init_env(argc - 1, argv + 1, &env))
 		return (1);
-	print_stack_ops(&stack_ops);
-	vector_clear(&vector);
-	vector_clear(&stack_ops);
+	if (sort3(&env.a, &env.stack_ops_a, 0))
+		return (destroy_env(&env), ft_printf("Allocation Error\n"), 1);
+	print_stack_ops(&env.stack_ops_a);
+	vector_clear(&env.a);
+	vector_clear(&env.stack_ops_a);
 	return (0);
 }

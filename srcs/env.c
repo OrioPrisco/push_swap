@@ -60,6 +60,4 @@ void	destroy_env(t_env *env)
 	vector_clear(&env->a);
 	vector_clear(&env->b);
 	vector_clear(&env->ps_ops);
-	vector_clear(&env->stack_ops_a);
-	vector_clear(&env->stack_ops_b);
 }

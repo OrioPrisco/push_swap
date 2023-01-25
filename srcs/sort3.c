@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "sort.h"
 #include "vector.h"
 #include "order.h"
 #include "push_swap.h"
+#include "stack.h"
 
 static	int	sort3_size3(t_vector *ops, t_order3 order)
 {
@@ -46,12 +48,12 @@ static	int	sort3_size3p(t_vector *ops, t_order3 order)
 	return (vector_append(ops, SWAP) || sort3_size3p(ops, BCA));
 }
 
-int	sort3(const t_vector *vec, t_vector *stack_ops, int reversed)
+int	sort3(t_stack_slice *slice)
 {
 	t_order3	order;
 
-	order = get_order3(vec, reversed);
-	if (vec->size == 3)
-		return (sort3_size3(stack_ops, order));
-	return (sort3_size3p(stack_ops, order));
+	order = get_order3(slice->stack, slice->reversed);
+	if (slice->stack->size == 3)
+		return (sort3_size3(slice->ops, order));
+	return (sort3_size3p(slice->ops, order));
 }

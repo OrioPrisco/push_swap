@@ -37,8 +37,8 @@ int	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 
 void	vector_sort(t_vector *vector)
 {
-	size_t	i;
-	size_t	j;
+	size_t			i;
+	size_t			j;
 	t_vector_data	temp;
 
 	i = 0;

@@ -61,15 +61,15 @@ void	vector_sort(t_vector *vector)
 
 int	vector_copy(t_vector *dest, t_vector *src)
 {
-	return (vector_copy_n(dest, src, src->size));
+	return (vector_copy_n(dest, src->data, src->size));
 }
 
-int	vector_copy_n(t_vector *dest, t_vector *src, size_t n)
+int	vector_copy_n(t_vector *dest, t_vector_data *src, size_t n)
 {
-	dest->data = malloc(n * sizeof(*src->data));
+	dest->data = malloc(n * sizeof(*src));
 	if (!dest->data)
 		return (1);
-	ft_memcpy(dest->data, src->data, n * sizeof(*src->data));
+	ft_memcpy(dest->data, src, n * sizeof(*src));
 	dest->size = n;
 	dest->malloced_size = n;
 	return (0);

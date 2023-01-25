@@ -33,6 +33,7 @@ t_vector_data	vector_pop(t_vector *vector, size_t index);
 int				vector_insert(t_vector *vector, size_t index,
 					t_vector_data data);
 int				vector_copy(t_vector *des, t_vector *src);
+int				vector_copy_n(t_vector *dest, t_vector *src, size_t n);
 void			vector_sort(t_vector *vector);
 
 #endif

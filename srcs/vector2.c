@@ -35,19 +35,11 @@ int	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 	return (0);
 }
 
-static void	ft_swap(t_vector_data *a, t_vector_data *b)
-{
-	t_vector_data	temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
 void	vector_sort(t_vector *vector)
 {
 	size_t	i;
 	size_t	j;
+	t_vector_data	temp;
 
 	i = 0;
 	while (i < vector->size)
@@ -56,7 +48,11 @@ void	vector_sort(t_vector *vector)
 		while (j < vector->size)
 		{
 			if (vector->data[i] > vector->data[j])
-				ft_swap(vector->data + i, vector->data + j);
+			{
+				temp = *(vector->data + i);
+				*(vector->data + i) = *(vector->data + j);
+				*(vector->data + j) = temp;
+			}
 			j++;
 		}
 		i++;

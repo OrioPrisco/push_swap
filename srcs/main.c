@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 		return (1);
 	vector_init(&ops);
 	slice = (t_stack_slice){&env.a, &ops, env.a.size, 0};
-	if (sort3(&slice))
+	if (split_stack(&slice, 0))
 		return (destroy_env(&env), ft_printf("Allocation Error\n"), 1);
 	print_stack_ops(slice.ops);
 	vector_clear(&env.a);

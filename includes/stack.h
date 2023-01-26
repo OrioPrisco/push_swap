@@ -17,6 +17,7 @@
 # include <stddef.h>
 
 typedef struct s_vector	t_vector;
+typedef struct s_env	t_env;
 
 typedef struct s_stack_slice
 {
@@ -37,4 +38,5 @@ typedef enum e_stack_ops
 	STOP_COMMIT,
 }	t_stack_ops;
 
+bool	split_stack(t_stack_slice *cur, t_stack_slice *other);
 #endif

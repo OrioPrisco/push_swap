@@ -20,6 +20,7 @@ SRC				=	main.c\
 					sort3.c\
 					debug.c\
 					env.c\
+					split.c\
 
 NAME			=	push_swap
 

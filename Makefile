@@ -15,6 +15,7 @@ CC				=	cc
 SRC				=	main.c\
 					vector.c\
 					vector2.c\
+					vector3.c\
 					order.c\
 					sort3.c\
 					debug.c\

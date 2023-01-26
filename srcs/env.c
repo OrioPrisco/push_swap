@@ -31,6 +31,7 @@ static bool	duplicates(t_vector *vec)
 			return (ft_printf("Duplicate Value : %d\n", sorted.data[i]));
 		i++;
 	}
+	vector_clear(&sorted);
 	return (0);
 }
 

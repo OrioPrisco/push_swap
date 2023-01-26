@@ -20,7 +20,7 @@ static const char	*g_stack_ops[] = {
 	"ROTATE_DOWN",
 	"PUSH",
 	"SWAP",
-	"NO_COMMIT",
+	"STOP_COMMIT",
 };
 
 static const char	*g_ps_ops[] = {

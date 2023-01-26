@@ -13,8 +13,10 @@
 #ifndef SORT_H
 # define SORT_H
 
+# include <stdbool.h>
+
 typedef struct s_stack_slice	t_stack_slice;
 
-int	sort3(t_stack_slice *slice);
+bool	sort3(t_stack_slice *slice);
 
 #endif

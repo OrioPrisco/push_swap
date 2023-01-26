@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-static int	duplicates(t_vector *vec)
+static bool	duplicates(t_vector *vec)
 {
 	t_vector	sorted;
 	size_t		i;
@@ -34,7 +34,7 @@ static int	duplicates(t_vector *vec)
 	return (0);
 }
 
-int	init_env(int argc, char **argv, t_env *env)
+bool	init_env(int argc, char **argv, t_env *env)
 {
 	char	*endptr;
 	int		nbr;

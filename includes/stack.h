@@ -13,6 +13,8 @@
 #ifndef STACK_H
 # define STACK_H
 
+# include <stdbool.h>
+
 typedef struct s_vector	t_vector;
 
 typedef struct s_stack_slice
@@ -20,7 +22,7 @@ typedef struct s_stack_slice
 	t_vector	*stack;
 	t_vector	*ops;
 	size_t		size;
-	_Bool		reversed;
+	bool		reversed;
 }	t_stack_slice;
 
 //TODO : add ROTATE_OR_SWAP op, as some things can be done with either

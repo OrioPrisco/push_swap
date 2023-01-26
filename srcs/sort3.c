@@ -16,7 +16,7 @@
 #include "push_swap.h"
 #include "stack.h"
 
-static	int	sort3_size3(t_vector *ops, t_order3 order)
+static bool	sort3_size3(t_vector *ops, t_order3 order)
 {
 	if (order == ABC)
 		return (0);
@@ -31,7 +31,7 @@ static	int	sort3_size3(t_vector *ops, t_order3 order)
 	return (vector_append(ops, SWAP) || sort3_size3(ops, BCA));
 }
 
-static	int	sort3_size3p(t_vector *ops, t_order3 order)
+static bool	sort3_size3p(t_vector *ops, t_order3 order)
 {
 	if (order == ABC)
 		return (0);
@@ -48,7 +48,7 @@ static	int	sort3_size3p(t_vector *ops, t_order3 order)
 	return (vector_append(ops, SWAP) || sort3_size3p(ops, BCA));
 }
 
-int	sort3(t_stack_slice *slice)
+bool	sort3(t_stack_slice *slice)
 {
 	t_order3	order;
 

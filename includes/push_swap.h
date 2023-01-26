@@ -14,6 +14,7 @@
 # define PUSH_SWAP_H
 
 # include "vector.h"
+# include <stdbool.h>
 
 typedef struct s_env
 {
@@ -37,6 +38,6 @@ typedef enum e_ps_ops
 	RRR,
 }	t_ps_ops;
 
-int		init_env(int argc, char **argv, t_env *env);
+bool	init_env(int argc, char **argv, t_env *env);
 void	destroy_env(t_env *env);
 #endif

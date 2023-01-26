@@ -20,7 +20,7 @@ void	vector_init(t_vector *vector)
 	vector->data = 0;
 }
 
-int	vector_allocate(t_vector *vector, size_t size)
+bool	vector_allocate(t_vector *vector, size_t size)
 {
 	if (size == 0)
 		size = 1;
@@ -32,7 +32,7 @@ int	vector_allocate(t_vector *vector, size_t size)
 	return (0);
 }
 
-int	vector_append(t_vector *vector, t_vector_data data)
+bool	vector_append(t_vector *vector, t_vector_data data)
 {
 	if (vector_maybe_grow(vector))
 		return (1);
@@ -49,7 +49,7 @@ void	vector_clear(t_vector *vector)
 	vector->malloced_size = 0;
 }
 
-int	vector_maybe_grow(t_vector *vector)
+bool	vector_maybe_grow(t_vector *vector)
 {
 	t_vector_data	*new_data;
 

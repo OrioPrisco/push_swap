@@ -24,7 +24,7 @@ t_vector_data	vector_pop(t_vector *vector, size_t index)
 	return (data);
 }
 
-int	vector_insert(t_vector *vector, size_t index, t_vector_data data)
+bool	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 {
 	if (vector_maybe_grow(vector))
 		return (0);
@@ -59,12 +59,12 @@ void	vector_sort(t_vector *vector)
 	}
 }
 
-int	vector_copy(t_vector *dest, t_vector *src)
+bool	vector_copy(t_vector *dest, const t_vector *src)
 {
 	return (vector_copy_n(dest, src->data, src->size));
 }
 
-int	vector_copy_n(t_vector *dest, t_vector_data *src, size_t n)
+bool	vector_copy_n(t_vector *dest, const t_vector_data *src, size_t n)
 {
 	dest->data = malloc(n * sizeof(*src));
 	if (!dest->data)

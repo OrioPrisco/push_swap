@@ -23,12 +23,15 @@ typedef struct s_stack_slice
 	_Bool		reversed;
 }	t_stack_slice;
 
+//TODO : add ROTATE_OR_SWAP op, as some things can be done with either
+//		will make merging ops easier
 typedef enum e_stack_ops
 {
 	ROTATE_UP,
 	ROTATE_DOWN,
 	PUSH,
 	SWAP,
+	STOP_COMMIT,
 }	t_stack_ops;
 
 #endif

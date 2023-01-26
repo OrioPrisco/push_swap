@@ -12,6 +12,7 @@
 
 #include "ft_printf.h"
 #include "vector.h"
+#include "stack.h"
 #include <stddef.h>
 
 static const char	*g_stack_ops[] = {
@@ -19,6 +20,7 @@ static const char	*g_stack_ops[] = {
 	"ROTATE_DOWN",
 	"PUSH",
 	"SWAP",
+	"NO_COMMIT",
 };
 
 static const char	*g_ps_ops[] = {

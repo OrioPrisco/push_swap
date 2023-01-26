@@ -14,6 +14,7 @@
 # define STACK_H
 
 # include <stdbool.h>
+# include <stddef.h>
 
 typedef struct s_vector	t_vector;
 

@@ -38,5 +38,6 @@ typedef enum e_stack_ops
 	STOP_COMMIT,
 }	t_stack_ops;
 
+bool	commit_moves(t_stack_slice *cur, t_stack_slice *other, t_env *env);
 bool	split_stack(t_stack_slice *cur, t_stack_slice *other);
 #endif

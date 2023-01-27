@@ -22,6 +22,7 @@ SRC				=	main.c\
 					env.c\
 					split.c\
 					translate.c\
+					execute.c\
 
 NAME			=	push_swap
 

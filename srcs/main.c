@@ -18,8 +18,8 @@
 #include "debug.h"
 #include "push_swap.h"
 
-static const int	g_op1[] = {ROTATE_UP, SWAP, ROTATE_DOWN, PUSH, SWAP};
-static const int	g_op2[] = {ROTATE_UP, ROTATE_DOWN, PUSH, SWAP};
+//static const int	g_op1[] = {ROTATE_UP, SWAP, ROTATE_DOWN, PUSH, SWAP};
+//static const int	g_op2[] = {ROTATE_UP, ROTATE_DOWN, PUSH, SWAP};
 
 int	main(int argc, char **argv)
 {
@@ -37,11 +37,15 @@ int	main(int argc, char **argv)
 	vector_init(&ops_b);
 	slice = (t_sub_stack){&env.a, &ops, env.a.size, 0};
 	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, 0};
-	if (vector_copy_n(&ops, g_op1, sizeof(g_op1) / sizeof(g_op1[0]))
-		|| vector_copy_n(&ops_b, g_op2, sizeof(g_op2) / sizeof(g_op2[0])))
+	if (split_stack(&slice, &slice_b))
 		return (1);
-	translate_stack_ops(&slice, &slice_b, &env);
+	print_stack_ops(slice.ops);
+	if (translate_stack_ops(&slice, &slice_b, &env))
+		return (1);
 	print_ps_ops(&env.ps_ops);
+	if (execute_ps_ops(&env))
+		return (1);
+	print_stacks(&env.a, &env.b);
 	vector_clear(&env.a);
 	vector_clear(slice.ops);
 	vector_clear(slice_b.ops);

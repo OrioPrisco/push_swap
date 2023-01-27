@@ -21,6 +21,7 @@ typedef struct s_env
 	t_vector	a;
 	t_vector	b;
 	t_vector	ps_ops;
+	size_t		ops_executed;
 }	t_env;
 
 typedef enum e_ps_ops

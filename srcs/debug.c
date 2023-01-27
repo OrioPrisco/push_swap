@@ -60,3 +60,24 @@ void	print_ps_ops(const t_vector *ops)
 		i++;
 	}
 }
+
+void	print_stacks(const t_vector *a, const t_vector *b)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < a->size || i < b->size)
+	{
+		ft_printf("+=======+=======+\n");
+		if (i < a->size)
+			ft_printf("| %5d ", a->data[i]);
+		else
+			ft_printf("|       ");
+		if (i < b->size)
+			ft_printf("| %5d |\n", b->data[i]);
+		else
+			ft_printf("|       |\n");
+		i++;
+	}
+	ft_printf("+===A===+===B===+\n");
+}

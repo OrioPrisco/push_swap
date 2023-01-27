@@ -31,6 +31,8 @@ static bool	sort3_size3(t_vector *ops, t_order3 order)
 	return (vector_append(ops, SWAP) || sort3_size3(ops, BCA));
 }
 
+//TODO: when sub stack shift is implemented, do no generate the last rotate
+//instructions, defer them instead ? Might not have an impact actually
 static bool	sort3_size3p(t_vector *ops, t_order3 order)
 {
 	if (order == ABC)
@@ -52,6 +54,14 @@ bool	sort3(t_sub_stack *slice)
 {
 	t_order3	order;
 
+	if (slice->size <= 1)
+		return (0);
+	if (slice->size == 2)
+	{
+		if ((slice->stack->data[0] > slice->stack->data[1]) ^ slice->reversed)
+			return (vector_append(slice->ops, SWAP));
+		return (0);
+	}
 	order = get_order3(slice->stack, slice->reversed);
 	if (slice->stack->size == 3)
 		return (sort3_size3(slice->ops, order));

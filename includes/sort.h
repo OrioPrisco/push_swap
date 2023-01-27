@@ -15,8 +15,8 @@
 
 # include <stdbool.h>
 
-typedef struct s_stack_slice	t_stack_slice;
+typedef struct s_sub_stack	t_sub_stack;
 
-bool	sort3(t_stack_slice *slice);
+bool	sort3(t_sub_stack *slice);
 
 #endif

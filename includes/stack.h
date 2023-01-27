@@ -19,13 +19,13 @@
 typedef struct s_vector	t_vector;
 typedef struct s_env	t_env;
 
-typedef struct s_stack_slice
+typedef struct s_sub_stack
 {
 	t_vector	*stack;
 	t_vector	*ops;
 	size_t		size;
 	bool		reversed;
-}	t_stack_slice;
+}	t_sub_stack;
 
 //TODO : add ROTATE_OR_SWAP op, as some things can be done with either
 //		will make merging ops easier
@@ -38,6 +38,6 @@ typedef enum e_stack_ops
 	STOP_COMMIT,
 }	t_stack_ops;
 
-bool	commit_moves(t_stack_slice *cur, t_stack_slice *other, t_env *env);
-bool	split_stack(t_stack_slice *cur, t_stack_slice *other);
+bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env);
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other);
 #endif

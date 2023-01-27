@@ -18,13 +18,16 @@
 #include "debug.h"
 #include "push_swap.h"
 
+static const int	g_op1[] = {ROTATE_UP, SWAP, ROTATE_DOWN, PUSH, SWAP};
+static const int	g_op2[] = {ROTATE_UP, ROTATE_DOWN, PUSH, SWAP};
+
 int	main(int argc, char **argv)
 {
 	t_env			env;
-	t_stack_slice	slice;
+	t_sub_stack		slice;
 	t_vector		ops;
 	t_vector		ops_b;
-	t_stack_slice	slice_b;
+	t_sub_stack		slice_b;
 
 	if (argc < 2)
 		return (0);
@@ -32,16 +35,16 @@ int	main(int argc, char **argv)
 		return (1);
 	vector_init(&ops);
 	vector_init(&ops_b);
-	slice = (t_stack_slice){&env.a, &ops, env.a.size, 0};
-	slice_b = (t_stack_slice){&env.b, &ops_b, env.b.size, 0};
-	if (split_stack(&slice, 0))
-		return (destroy_env(&env), ft_printf("Allocation Error\n"), 1);
-	print_stack_ops(slice.ops);
-	commit_moves(&slice, &slice_b, &env);
-	print_ps_ops(&env.ps_ops);
-	commit_moves(&slice, &slice_b, &env);
+	slice = (t_sub_stack){&env.a, &ops, env.a.size, 0};
+	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, 0};
+	if (vector_copy_n(&ops, g_op1, sizeof(g_op1) / sizeof(g_op1[0]))
+		|| vector_copy_n(&ops_b, g_op2, sizeof(g_op2) / sizeof(g_op2[0])))
+		return (1);
+	translate_stack_ops(&slice, &slice_b, &env);
 	print_ps_ops(&env.ps_ops);
 	vector_clear(&env.a);
 	vector_clear(slice.ops);
+	vector_clear(slice_b.ops);
+	vector_clear(&env.ps_ops);
 	return (0);
 }

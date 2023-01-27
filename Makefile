@@ -21,7 +21,7 @@ SRC				=	main.c\
 					debug.c\
 					env.c\
 					split.c\
-					commit.c\
+					translate.c\
 
 NAME			=	push_swap
 

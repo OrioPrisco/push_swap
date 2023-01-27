@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
-int	get_median(t_stack_slice *slice)
+int	get_median(t_sub_stack *slice)
 {
 	t_vector	vec;
 	int			median;
@@ -29,7 +29,7 @@ int	get_median(t_stack_slice *slice)
 	return (median);
 }
 
-static bool	unrotate(t_stack_slice *cur, t_stack_slice *other, size_t rotated)
+static bool	unrotate(t_sub_stack *cur, t_sub_stack *other, size_t rotated)
 {
 	(void)other;
 	if (vector_append(cur->ops, STOP_COMMIT)
@@ -54,7 +54,7 @@ static bool	unrotate(t_stack_slice *cur, t_stack_slice *other, size_t rotated)
 //			and replace it with the appropriate instruction
 //			* Or could add a value after ROTATE_OR_SWAP with special meaning
 //			such as the number of instruction to look ahead
-bool	split_stack(t_stack_slice *cur, t_stack_slice *other)
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other)
 {
 	int		median;
 	size_t	to_push;

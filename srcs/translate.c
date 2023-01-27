@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commit.c                                           :+:      :+:    :+:   */
+/*   translate.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,7 +15,7 @@
 #include "push_swap.h"
 #include <stdbool.h>
 
-static bool	is_stack_a(t_stack_slice *slice, t_env *env)
+static bool	is_stack_a(t_sub_stack *slice, t_env *env)
 {
 	return (slice->stack == &env->a);
 }
@@ -55,7 +55,7 @@ static t_ps_ops	single_version(t_stack_ops op, bool is_stack_a)
 	return (-1);
 }
 
-bool	commit_moves(t_stack_slice *cur, t_stack_slice *other, t_env *env)
+bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env)
 {
 	bool	pushed;
 	size_t	i;

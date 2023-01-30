@@ -35,18 +35,12 @@ int	main(int argc, char **argv)
 		return (1);
 	vector_init(&ops);
 	vector_init(&ops_b);
-	slice = (t_sub_stack){&env.a, &ops, env.a.size, 0};
-	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, 0};
-	if (split_stack(&slice, &slice_b))
-		return (1);
-	print_stack_ops(slice.ops);
-	if (translate_stack_ops(&slice, &slice_b, &env))
-		return (1);
-	print_ps_ops(&env.ps_ops);
-	if (execute_ps_ops(&env))
-		return (1);
-	print_stacks(&env.a, &env.b);
+	slice = (t_sub_stack){&env.a, &ops, env.a.size, false};
+	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, false};
+	if (sort_stacks(slice, slice_b, &env) || (output_ps_ops(&env.ps_ops), 0))
+		ft_printf("error !\n");
 	vector_clear(&env.a);
+	vector_clear(&env.b);
 	vector_clear(slice.ops);
 	vector_clear(slice_b.ops);
 	vector_clear(&env.ps_ops);

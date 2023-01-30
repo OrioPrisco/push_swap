@@ -38,6 +38,7 @@ typedef enum e_stack_ops
 	STOP_COMMIT,
 }	t_stack_ops;
 
+bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env);
 bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env);
 bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 			size_t *pushed);

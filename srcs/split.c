@@ -36,7 +36,7 @@ static bool	unrotate(t_sub_stack *cur, t_sub_stack *other, size_t rotated)
 		|| vector_append_n(cur->ops, ROTATE_DOWN, rotated))
 	if (cur->size == cur->stack->size)
 		return (0);
-	if (vector_append_n(cur->ops, ROTATE_DOWN, cur->rotated))
+	if (vector_append_n(cur->ops, ROTATE_DOWN, rotated))
 		return (1);
 	return (0);
 }

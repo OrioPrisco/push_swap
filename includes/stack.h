@@ -39,6 +39,7 @@ typedef enum e_stack_ops
 }	t_stack_ops;
 
 bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env);
-bool	split_stack(t_sub_stack *cur, t_sub_stack *other);
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
+			size_t *pushed);
 bool	execute_ps_ops(t_env *env);
 #endif

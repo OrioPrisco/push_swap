@@ -34,6 +34,9 @@ static bool	unrotate(t_sub_stack *cur, t_sub_stack *other, size_t rotated)
 	(void)other;
 	if (vector_append(cur->ops, STOP_COMMIT)
 		|| vector_append_n(cur->ops, ROTATE_DOWN, rotated))
+	if (cur->size == cur->stack->size)
+		return (0);
+	if (vector_append_n(cur->ops, ROTATE_DOWN, cur->rotated))
 		return (1);
 	return (0);
 }
@@ -54,31 +57,32 @@ static bool	unrotate(t_sub_stack *cur, t_sub_stack *other, size_t rotated)
 //			and replace it with the appropriate instruction
 //			* Or could add a value after ROTATE_OR_SWAP with special meaning
 //			such as the number of instruction to look ahead
-bool	split_stack(t_sub_stack *cur, t_sub_stack *other)
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
+	size_t *pushed)
 {
 	int		median;
 	size_t	to_push;
 	size_t	rotated;
 	size_t	i;
 
+	(void)other;
 	to_push = cur->size / 2;
 	median = get_median(cur);
 	i = 0;
 	rotated = 0;
+	if (pushed)
+		*pushed = to_push;
 	while (to_push)
 	{
 		if (cur->stack->data[i++] < median)
 		{
-			to_push--;
-			if (vector_append(cur->ops, PUSH))
+			if (to_push--, vector_append(cur->ops, PUSH))
 				return (1);
 		}
-		else
-		{
-			rotated++;
-			if (vector_append(cur->ops, ROTATE_UP))
-				return (1);
-		}
+		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
+			return (1);
 	}
+	if (rotate)
+		*rotate = rotated;
 	return (unrotate(cur, other, rotated));
 }

@@ -37,6 +37,20 @@ static const char	*g_ps_ops[] = {
 	"RRR",
 };
 
+static const char	*g_ps_ops_lowercase[] = {
+	"sa",
+	"sb",
+	"sss",
+	"pa",
+	"pb",
+	"ra",
+	"rb",
+	"rr",
+	"rra",
+	"rrb",
+	"rrr",
+};
+
 void	print_stack_ops(const t_vector *ops)
 {
 	size_t	i;
@@ -80,4 +94,16 @@ void	print_stacks(const t_vector *a, const t_vector *b)
 		i++;
 	}
 	ft_printf("+===A===+===B===+\n");
+}
+
+void	output_ps_ops(const t_vector *ops)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ops->size)
+	{
+		ft_printf("%s\n", g_ps_ops_lowercase[ops->data[i]]);
+		i++;
+	}
 }

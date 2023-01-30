@@ -40,11 +40,14 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 		return ((sort3(&cur) || translate_stack_ops
 				(&cur, &other, env) || (vector_clear(&cur_ops), 0)
 				|| execute_ps_ops(env)) && (vector_clear(&cur_ops), 1));
+	if (unrotate(&cur, &other) || translate_stack_ops(&cur, &other, env)
+		|| execute_ps_ops(env))
+		return (vector_clear(&cur_ops), 1);
 	if (split_stack(&cur, &other, &rotated, &pushed)
 		|| translate_stack_ops(&cur, &other, env) || execute_ps_ops(env))
 		return (vector_clear(&cur_ops), 1);
 	other = (t_sub_stack)
-	{other.stack, other.ops, pushed, !cur.reversed};
+	{other.stack, other.ops, pushed, rotated, !cur.reversed};
 	cur.size -= pushed;
 	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env))
 		return (vector_clear(&cur_ops), 1);

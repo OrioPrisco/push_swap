@@ -24,6 +24,7 @@ typedef struct s_sub_stack
 	t_vector	*stack;
 	t_vector	*ops;
 	size_t		size;
+	size_t		rotated;
 	bool		reversed;
 }	t_sub_stack;
 
@@ -43,4 +44,5 @@ bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env);
 bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 			size_t *pushed);
 bool	execute_ps_ops(t_env *env);
+bool	unrotate(t_sub_stack *cur, t_sub_stack *other);
 #endif

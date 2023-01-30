@@ -29,34 +29,24 @@ int	get_median(t_sub_stack *slice)
 	return (median);
 }
 
-static bool	unrotate(t_sub_stack *cur, t_sub_stack *other, size_t rotated)
+//TODO : Determine best way to unrotate
+//TODO : Use rotate-or-swap if possible ?
+bool	unrotate(t_sub_stack *cur, t_sub_stack *other)
 {
 	(void)other;
-	if (vector_append(cur->ops, STOP_COMMIT)
-		|| vector_append_n(cur->ops, ROTATE_DOWN, rotated))
 	if (cur->size == cur->stack->size)
 		return (0);
-	if (vector_append_n(cur->ops, ROTATE_DOWN, rotated))
+	if (vector_append_n(cur->ops, ROTATE_DOWN, cur->rotated))
 		return (1);
 	return (0);
 }
 
-// Do i have to put the stack back into place in all situations ?
-// Probably not if the slice is the entire stack. Unsure otherwise
-// Maybe with other sorting strategies
-//		However can have the next split rotate the slice back into place
-//		* Need to store the offset of the slice ? or keep that info somehow
-//			Removes the need for no commit, but doesn't hurt to keep around
 //TODO : determine which directions is fastest split in
 //TODO : figure out whic half (lower or upper) is fastest to split
 //TODO : for the last rotate put a ROTATE_OR_SWAP, and let commit fct
 //		decide what op to translate into
-//			* ISSUE: how do i know how many rotate to push after
-//			the STOP_COMMIT ?
-//			* maybe make commit look ahead for an REVERSE_ROTATE_OR_SWAP
-//			and replace it with the appropriate instruction
-//			* Or could add a value after ROTATE_OR_SWAP with special meaning
-//			such as the number of instruction to look ahead
+//		/!\unrotating is now left to the sorter, allowing to decouple the split
+//		and rotate logic
 bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 	size_t *pushed)
 {
@@ -84,5 +74,5 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 	}
 	if (rotate)
 		*rotate = rotated;
-	return (unrotate(cur, other, rotated));
+	return (0);
 }

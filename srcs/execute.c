@@ -27,11 +27,9 @@ static bool	execute_one(t_env *env, t_ps_ops op)
 	if (op == PB)
 		return (vector_insert(&env->b, 0, vector_pop(&env->a, 0)));
 	if (op == RA)
-		return (
-			vector_insert(&env->a, env->a.size - 1, vector_pop(&env->a, 0)));
+		return (vector_insert(&env->a, env->a.size, vector_pop(&env->a, 0)));
 	if (op == RB)
-		return (
-			vector_insert(&env->b, env->b.size - 1, vector_pop(&env->b, 0)));
+		return (vector_insert(&env->b, env->b.size, vector_pop(&env->b, 0)));
 	if (op == RR)
 		return (execute_one(env, RA) || execute_one(env, RB));
 	if (op == RRA)

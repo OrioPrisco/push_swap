@@ -24,7 +24,7 @@ int	get_median(t_sub_stack *slice)
 
 	vector_copy_n(&vec, slice->stack->data, slice->size);
 	vector_sort(&vec);
-	median = vec.data[vec.size / 2];
+	median = vec.data[(vec.size / 2) - slice->reversed];
 	vector_clear(&vec);
 	return (median);
 }
@@ -56,7 +56,7 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 	size_t	i;
 
 	(void)other;
-	to_push = cur->size / 2;
+	to_push = (cur->size / 2) + cur->reversed;
 	median = get_median(cur);
 	i = 0;
 	rotated = 0;
@@ -64,7 +64,7 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 		*pushed = to_push;
 	while (to_push)
 	{
-		if (cur->stack->data[i++] < median)
+		if ((cur->stack->data[i++] < median) ^ cur->reversed)
 		{
 			if (to_push--, vector_append(cur->ops, PUSH))
 				return (1);

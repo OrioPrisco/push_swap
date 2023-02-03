@@ -13,11 +13,12 @@
 #include "vector.h"
 #include "libft.h"
 
-void	vector_init(t_vector *vector)
+t_vector	*vector_init(t_vector *vector)
 {
 	vector->size = 0;
 	vector->malloced_size = 0;
 	vector->data = 0;
+	return (vector);
 }
 
 bool	vector_allocate(t_vector *vector, size_t size)
@@ -41,12 +42,13 @@ bool	vector_append(t_vector *vector, t_vector_data data)
 	return (0);
 }
 
-void	vector_clear(t_vector *vector)
+t_vector	*vector_clear(t_vector *vector)
 {
 	free(vector->data);
 	vector->data = 0;
 	vector->size = 0;
 	vector->malloced_size = 0;
+	return (vector);
 }
 
 bool	vector_maybe_grow(t_vector *vector)

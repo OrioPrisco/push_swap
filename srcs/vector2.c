@@ -35,7 +35,7 @@ bool	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 	return (0);
 }
 
-void	vector_sort(t_vector *vector)
+t_vector	*vector_sort(t_vector *vector)
 {
 	size_t			i;
 	size_t			j;
@@ -57,6 +57,7 @@ void	vector_sort(t_vector *vector)
 		}
 		i++;
 	}
+	return (vector);
 }
 
 bool	vector_copy(t_vector *dest, const t_vector *src)

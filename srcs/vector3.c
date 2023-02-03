@@ -22,6 +22,15 @@ bool	vector_append_n(t_vector *vector, t_vector_data data, size_t n)
 	return (0);
 }
 
+//TODO : make a better implementation
+bool	vector_append_elems(t_vector *vector, t_vector_data *data, size_t n)
+{
+	while (n--)
+		if (vector_append(vector, *data++))
+			return (1);
+	return (0);
+}
+
 void	vector_pop_n(t_vector *vector, size_t index, size_t n)
 {
 	ft_memmove(vector->data + index, vector->data + index + n,

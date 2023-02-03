@@ -32,7 +32,11 @@ typedef struct s_vector {
 void			vector_init(t_vector *vector);
 bool			vector_allocate(t_vector *vector, size_t size);
 bool			vector_append(t_vector *vector, t_vector_data data);
+//appends an element n times
 bool			vector_append_n(t_vector *vector, t_vector_data data, size_t n);
+//appends n elems from data
+bool			vector_append_elems(t_vector *vector, t_vector_data *data,
+					size_t n);
 //Frees all the memory inside the vector and resets the vector back to all 0s
 //Does not free the t_vector *
 void			vector_clear(t_vector *vector);

@@ -28,6 +28,9 @@ bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 	return (0);
 }
 
+//TODO : after everything is sorted, do passes to remove instructions cancelling
+//		each other, like pa pb, ra rra, or ra rb rra (rb has no influence on a)
+//		maybe do passes when translating too
 bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 {
 	t_vector	cur_ops;

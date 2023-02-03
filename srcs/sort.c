@@ -34,7 +34,6 @@ bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 {
 	t_vector	cur_ops;
-	size_t		rotated;
 	size_t		pushed;
 
 	vector_init(&cur_ops);
@@ -43,20 +42,17 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 		return ((sort3(&cur) || translate_stack_ops
 				(&cur, &other, env) || (vector_clear(&cur_ops), 0)
 				|| execute_ps_ops(env)) && (vector_clear(&cur_ops), 1));
-	if (split_stack(&cur, &other, &rotated, &pushed)
+	if (split_stack(&cur, &other, &cur.rotated, &pushed)
 		|| translate_stack_ops(&cur, &other, env) || execute_ps_ops(env))
 		return (vector_clear(&cur_ops), 1);
 	cur.size -= pushed;
-	cur.rotated = rotated;
-	other = (t_sub_stack)
-	{other.stack, other.ops, pushed, 0, !cur.reversed};
+	other = (t_sub_stack){other.stack, other.ops, pushed, 0, !cur.reversed};
 	if (unrotate(&cur, &other) || translate_stack_ops(&cur, &other, env)
 		|| execute_ps_ops(env))
 		return (vector_clear(&cur_ops), 1);
 	cur.rotated = 0;
-	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env))
-		return (vector_clear(&cur_ops), 1);
-	if (merge_stacks(&cur, &other) || translate_stack_ops(&cur, &other, env)
+	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env)
+		|| merge_stacks(&cur, &other) || translate_stack_ops(&cur, &other, env)
 		|| translate_stack_ops(&other, &cur, env) || execute_ps_ops(env))
 		return (vector_clear(&cur_ops), 1);
 	cur.size += pushed;

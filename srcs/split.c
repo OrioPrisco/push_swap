@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
-int	get_median(t_sub_stack *slice)
+static int	get_median(t_sub_stack *slice)
 {
 	t_vector	vec;
 	int			median;
@@ -29,27 +29,18 @@ int	get_median(t_sub_stack *slice)
 	return (median);
 }
 
-//TODO : determine which directions is fastest split in
-//TODO : figure out whic half (lower or upper) is fastest to split
 //TODO : for the last rotate put a ROTATE_OR_SWAP, and let commit fct
 //		decide what op to translate into
 //		/!\unrotating is now left to the sorter, allowing to decouple the split
 //		and rotate logic
-bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
-	size_t *pushed)
+static bool	split_up(t_sub_stack *cur, size_t *rotate, int median,
+	size_t to_push)
 {
-	int		median;
-	size_t	to_push;
 	size_t	rotated;
 	size_t	i;
 
-	(void)other;
-	to_push = (cur->size / 2) + (cur->reversed && cur->size % 2);
-	median = get_median(cur);
 	i = 0;
 	rotated = 0;
-	if (pushed)
-		*pushed = to_push;
 	while (to_push)
 	{
 		if ((cur->stack->data[i++] < median) ^ cur->reversed)
@@ -62,5 +53,70 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotate,
 	}
 	if (rotate)
 		*rotate = rotated;
+	return (0);
+}
+
+//TODO : on reverse rotate, if the next elem also is to be pushed,
+//		push the smallest first, by maybe delaying the push
+static bool	split_down(t_sub_stack *cur, size_t *rotate, int median,
+	size_t to_push)
+{
+	size_t	rotated;
+	size_t	i;
+
+	i = 0;
+	rotated = 0;
+	while (to_push)
+	{
+		if ((cur->stack->data[i] < median) ^ cur->reversed)
+		{
+			if ((rotated++, to_push--, vector_append(cur->ops, PUSH))
+				|| (to_push && vector_append(cur->ops, ROTATE_DOWN)))
+				return (1);
+		}
+		else if (rotated++, vector_append(cur->ops, ROTATE_DOWN))
+			return (1);
+		if (i-- == 0)
+			i = cur->stack->size - 1;
+	}
+	if (rotate)
+		*rotate = rotated;
+	return (0);
+}
+
+//TODO don't use pushed for storage, might be null ?
+// or make it a requirement to not be null
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
+	size_t *pushed)
+{
+	t_vector	ops_up;
+	t_vector	ops_down;
+	int			median;
+	size_t		rotated_d;
+	t_sub_stack	cpy;
+
+	(void)other;
+	vector_init(&ops_up);
+	vector_init(&ops_down);
+	*pushed = (cur->size / 2) + (cur->reversed && cur->size % 2);
+	median = get_median(cur);
+	cpy = (t_sub_stack)
+	{cur->stack, &ops_up, cur->size, cur->rotated, cur->reversed};
+	if (split_up(&cpy, rotated, median, *pushed))
+		return (1);
+	cpy = (t_sub_stack)
+	{cur->stack, &ops_down, cur->size, cur->rotated, cur->reversed};
+	if (split_down(&cpy, &rotated_d, median, *pushed))
+		return (1);
+	if (ops_up.size > ops_down.size)
+	{
+		rotated && (*rotated = rotated_d);
+		if (vector_append_elems(cur->ops, ops_down.data, ops_down.size))
+			return (1);
+	}
+	else if (vector_append_elems(cur->ops, ops_up.data, ops_up.size))
+		return (1);
+	vector_clear(&ops_up);
+	vector_clear(&ops_down);
 	return (0);
 }

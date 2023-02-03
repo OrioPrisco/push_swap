@@ -29,18 +29,6 @@ int	get_median(t_sub_stack *slice)
 	return (median);
 }
 
-//TODO : Determine best way to unrotate
-//TODO : Use rotate-or-swap if possible ?
-bool	unrotate(t_sub_stack *cur, t_sub_stack *other)
-{
-	(void)other;
-	if (cur->size == cur->stack->size)
-		return (0);
-	if (vector_append_n(cur->ops, ROTATE_DOWN, cur->rotated))
-		return (1);
-	return (0);
-}
-
 //TODO : determine which directions is fastest split in
 //TODO : figure out whic half (lower or upper) is fastest to split
 //TODO : for the last rotate put a ROTATE_OR_SWAP, and let commit fct

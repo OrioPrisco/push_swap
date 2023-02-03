@@ -24,6 +24,7 @@ SRC				=	main.c\
 					translate.c\
 					execute.c\
 					sort.c\
+					unrotate.c\
 
 NAME			=	push_swap
 

@@ -38,7 +38,7 @@ int	main(int argc, char **argv)
 	slice = (t_sub_stack){&env.a, &ops, env.a.size, 0, false};
 	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, 0, false};
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),
-			output_ps_ops(&env.ps_ops), 0))
+			merge_ops(&env.ps_ops), output_ps_ops(&env.ps_ops), 0))
 		ft_printf("error !\n");
 	vector_clear(&env.a);
 	vector_clear(&env.b);

@@ -42,4 +42,5 @@ typedef enum e_ps_ops
 bool	init_env(int argc, char **argv, t_env *env);
 void	destroy_env(t_env *env);
 void	cancel_ops(t_vector *vec, bool stack_ops);
+void	merge_ops(t_vector *vec);
 #endif

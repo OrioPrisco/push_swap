@@ -96,27 +96,22 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
 	t_sub_stack	cpy;
 
 	(void)other;
-	vector_init(&ops_up);
-	vector_init(&ops_down);
 	*pushed = (cur->size / 2) + (cur->reversed && cur->size % 2);
 	median = get_median(cur);
 	cpy = (t_sub_stack)
-	{cur->stack, &ops_up, cur->size, cur->rotated, cur->reversed};
+	{cur->stack, vector_init(&ops_up), cur->size, cur->rotated, cur->reversed};
 	if (split_up(&cpy, rotated, median, *pushed))
-		return (1);
-	cpy = (t_sub_stack)
-	{cur->stack, &ops_down, cur->size, cur->rotated, cur->reversed};
+		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
+	cpy = (t_sub_stack){cur->stack,
+		vector_init(&ops_down), cur->size, cur->rotated, cur->reversed};
 	if (split_down(&cpy, &rotated_d, median, *pushed))
-		return (1);
+		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
 	if (ops_up.size > ops_down.size)
-	{
-		rotated && (*rotated = rotated_d);
 		if (vector_append_elems(cur->ops, ops_down.data, ops_down.size))
-			return (1);
-	}
+			return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
+	if (ops_up.size > ops_down.size)
+		rotated && (*rotated = rotated_d);
 	else if (vector_append_elems(cur->ops, ops_up.data, ops_up.size))
-		return (1);
-	vector_clear(&ops_up);
-	vector_clear(&ops_down);
-	return (0);
+		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
+	return (vector_clear((vector_clear(&ops_down), &ops_up)), 0);
 }

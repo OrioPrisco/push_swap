@@ -4,3 +4,5 @@ push_swap
 *.swp
 *.swo
 checker_linux
+push_swap_visualizer
+imgui.ini

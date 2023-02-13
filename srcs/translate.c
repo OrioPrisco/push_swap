@@ -50,7 +50,7 @@ static t_ps_ops	single_version(t_stack_ops op, bool is_stack_a)
 	return (-1);
 }
 
-bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env)
+bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_vector *ops)
 {
 	bool	pushed;
 	size_t	i;
@@ -62,11 +62,11 @@ bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env)
 		if (!pushed && cur->ops->data[i] != PUSH && other->ops->size
 			&& other->ops->data[0] == cur->ops->data[i])
 		{
-			if (vector_append(&env->ps_ops, merged_version(cur->ops->data[i])))
+			if (vector_append(ops, merged_version(cur->ops->data[i])))
 				return (1);
 		}
 		else
-			if (vector_append(&env->ps_ops, single_version(cur->ops->data[i],
+			if (vector_append(ops, single_version(cur->ops->data[i],
 						cur->is_a)))
 				return (1);
 		if (cur->ops->data[i] == PUSH)

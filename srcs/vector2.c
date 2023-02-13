@@ -24,6 +24,7 @@ t_vector_data	vector_pop(t_vector *vector, size_t index)
 	return (data);
 }
 
+//TODO : probably can avoid recopying the end of the data twice
 bool	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 {
 	if (vector_maybe_grow(vector))

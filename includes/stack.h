@@ -26,6 +26,7 @@ typedef struct s_sub_stack
 	size_t		size;
 	size_t		rotated;
 	bool		reversed;
+	bool		is_a;
 }	t_sub_stack;
 
 //TODO : add ROTATE_OR_SWAP op, as some things can be done with either

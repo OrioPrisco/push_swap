@@ -46,7 +46,8 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 		|| translate_stack_ops(&cur, &other, env) || execute_ps_ops_env(env))
 		return (vector_clear(&cur_ops), 1);
 	cur.size -= pushed;
-	other = (t_sub_stack){other.stack, other.ops, pushed, 0, !cur.reversed};
+	other = (t_sub_stack)
+	{other.stack, other.ops, pushed, 0, !cur.reversed, other.is_a};
 	if (unrotate(&cur, &other) || translate_stack_ops(&cur, &other, env)
 		|| execute_ps_ops_env(env))
 		return (vector_clear(&cur_ops), 1);

@@ -98,12 +98,12 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
 	(void)other;
 	*pushed = (cur->size / 2) + (cur->reversed && cur->size % 2);
 	median = get_median(cur);
-	cpy = (t_sub_stack)
-	{cur->stack, vector_init(&ops_up), cur->size, cur->rotated, cur->reversed};
+	cpy = *cur;
+	cpy.ops = vector_init(&ops_up);
 	if (split_up(&cpy, rotated, median, *pushed))
 		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
-	cpy = (t_sub_stack){cur->stack,
-		vector_init(&ops_down), cur->size, cur->rotated, cur->reversed};
+	cpy = *cur;
+	cpy.ops = vector_init(&ops_down);
 	if (split_down(&cpy, &rotated_d, median, *pushed))
 		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
 	if (ops_up.size > ops_down.size)

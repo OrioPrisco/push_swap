@@ -15,11 +15,6 @@
 #include "push_swap.h"
 #include <stdbool.h>
 
-static bool	is_stack_a(t_sub_stack *slice, t_env *env)
-{
-	return (slice->stack == &env->a);
-}
-
 //Giving a non mergable op is UB
 static t_ps_ops	merged_version(t_stack_ops op)
 {
@@ -72,7 +67,7 @@ bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_env *env)
 		}
 		else
 			if (vector_append(&env->ps_ops, single_version(cur->ops->data[i],
-						is_stack_a(cur, env))))
+						cur->is_a)))
 				return (1);
 		if (cur->ops->data[i] == PUSH)
 			pushed = true;

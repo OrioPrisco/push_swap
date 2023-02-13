@@ -18,9 +18,6 @@
 #include "debug.h"
 #include "push_swap.h"
 
-//static const int	g_op1[] = {ROTATE_UP, SWAP, ROTATE_DOWN, PUSH, SWAP};
-//static const int	g_op2[] = {ROTATE_UP, ROTATE_DOWN, PUSH, SWAP};
-
 int	main(int argc, char **argv)
 {
 	t_env			env;

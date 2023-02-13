@@ -39,21 +39,24 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 	vector_init(&cur_ops);
 	cur.ops = &cur_ops;
 	if (cur.size <= 3)
-		return ((sort3(&cur) || translate_stack_ops
-				(&cur, &other, env) || (vector_clear(&cur_ops), 0)
-				|| execute_ps_ops(env)) && (vector_clear(&cur_ops), 1));
+		return ((sort3(&cur) || translate_stack_ops(&cur, &other, env)
+				|| (vector_clear(&cur_ops), 0) || execute_ps_ops
+				(&env->a, &env->b, &env->ps_ops, &env->ops_executed))
+			&& (vector_clear(&cur_ops), 1));
 	if (split_stack(&cur, &other, &cur.rotated, &pushed)
-		|| translate_stack_ops(&cur, &other, env) || execute_ps_ops(env))
+		|| translate_stack_ops(&cur, &other, env) || execute_ps_ops
+		(&env->a, &env->b, &env->ps_ops, &env->ops_executed))
 		return (vector_clear(&cur_ops), 1);
 	cur.size -= pushed;
 	other = (t_sub_stack){other.stack, other.ops, pushed, 0, !cur.reversed};
 	if (unrotate(&cur, &other) || translate_stack_ops(&cur, &other, env)
-		|| execute_ps_ops(env))
+		|| execute_ps_ops(&env->a, &env->b, &env->ps_ops, &env->ops_executed))
 		return (vector_clear(&cur_ops), 1);
 	cur.rotated = 0;
 	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env)
 		|| merge_stacks(&cur, &other) || translate_stack_ops(&cur, &other, env)
-		|| translate_stack_ops(&other, &cur, env) || execute_ps_ops(env))
+		|| translate_stack_ops(&other, &cur, env) || execute_ps_ops
+		(&env->a, &env->b, &env->ps_ops, &env->ops_executed))
 		return (vector_clear(&cur_ops), 1);
 	cur.size += pushed;
 	return (vector_clear(&cur_ops), 0);

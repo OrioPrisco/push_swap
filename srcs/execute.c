@@ -55,3 +55,8 @@ bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 	}
 	return (0);
 }
+
+bool	execute_ps_ops_env(t_env *env)
+{
+	return (execute_ps_ops(&env->a, &env->b, &env->ps_ops, &env->ops_executed));
+}

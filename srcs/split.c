@@ -14,10 +14,12 @@
 #include "order.h"
 #include "stack.h"
 #include "push_swap.h"
+#include "try.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
-static int	get_median(t_sub_stack *slice)
+static int	get_median(const t_sub_stack *slice)
 {
 	t_vector	vec;
 	int			median;
@@ -33,14 +35,20 @@ static int	get_median(t_sub_stack *slice)
 //		decide what op to translate into
 //		/!\unrotating is now left to the sorter, allowing to decouple the split
 //		and rotate logic
-static bool	split_up(t_sub_stack *cur, size_t *rotate, int median,
-	size_t to_push)
+//params : int[2] {median, to_push}
+static bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 {
 	size_t	rotated;
 	size_t	i;
+	int		median;
+	int		to_push;
 
+	median = ((int *)params)[0];
+	to_push = ((int *)params)[1];
 	i = 0;
 	rotated = 0;
+	other->size = to_push;
+	cur->size -= to_push;
 	while (to_push)
 	{
 		if ((cur->stack->data[i++] < median) ^ cur->reversed)
@@ -51,39 +59,43 @@ static bool	split_up(t_sub_stack *cur, size_t *rotate, int median,
 		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
 			return (1);
 	}
-	if (rotate)
-		*rotate = rotated;
+	cur->rotated = rotated;
+	other->reversed = !cur->reversed;
 	return (0);
 }
 
 //TODO : on reverse rotate, if the next elem also is to be pushed,
 //		push the smallest first, by maybe delaying the push
-static bool	split_down(t_sub_stack *cur, size_t *rotate, int median,
-	size_t to_push)
+//params : int[2] {median, to_push}
+static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 {
-	size_t	rotated;
 	size_t	i;
+	int		median;
+	int		to_push;
 
+	median = ((int *)params)[0];
+	to_push = ((int *)params)[1];
 	i = 0;
-	rotated = 0;
+	cur->rotated = 0;
+	cur->size -= (other->size = to_push);
 	while (to_push)
 	{
 		if ((cur->stack->data[i] < median) ^ cur->reversed)
 		{
-			if ((rotated++, to_push--, vector_append(cur->ops, PUSH))
+			if ((cur->rotated++, to_push--, vector_append(cur->ops, PUSH))
 				|| (to_push && vector_append(cur->ops, ROTATE_DOWN)))
 				return (1);
 		}
-		else if (rotated++, vector_append(cur->ops, ROTATE_DOWN))
+		else if (cur->rotated++, vector_append(cur->ops, ROTATE_DOWN))
 			return (1);
 		if (i-- == 0)
 			i = cur->stack->size - 1;
 	}
-	if (rotate)
-		*rotate = rotated;
+	other->reversed = !cur->reversed;
 	return (0);
 }
 
+/*
 //TODO don't use pushed for storage, might be null ?
 // or make it a requirement to not be null
 bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
@@ -114,4 +126,34 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
 	else if (vector_append_elems(cur->ops, ops_up.data, ops_up.size))
 		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
 	return (vector_clear((vector_clear(&ops_down), &ops_up)), 0);
+}
+*/
+static t_f_triable *const	g_strats[] = {
+	split_up,
+	split_down,
+};
+
+static const t_funcs		g_split_strats = {
+	&g_strats[0],
+	sizeof(g_strats) / sizeof(*g_strats)
+};
+
+//modifies other such that the size and rotated will be accurate
+//once ops are translated and executed
+//does not clear the instructions vector however
+bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
+{
+	t_sub_stacks	*best;
+	int				params[2];
+
+	(void)_;
+	params[1] = (cur->size / 2) + (cur->reversed && cur->size % 2);
+	params[0] = get_median(cur);
+	best = best_strat(cur, other, &g_split_strats, &params[0]);
+	if (!best)
+		return (1);
+	move_substack(cur, &best->cur);
+	move_substack(other, &best->other);
+	free(best);
+	return (0);
 }

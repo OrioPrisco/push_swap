@@ -95,39 +95,6 @@ static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 	return (0);
 }
 
-/*
-//TODO don't use pushed for storage, might be null ?
-// or make it a requirement to not be null
-bool	split_stack(t_sub_stack *cur, t_sub_stack *other, size_t *rotated,
-	size_t *pushed)
-{
-	t_vector	ops_up;
-	t_vector	ops_down;
-	int			median;
-	size_t		rotated_d;
-	t_sub_stack	cpy;
-
-	(void)other;
-	*pushed = (cur->size / 2) + (cur->reversed && cur->size % 2);
-	median = get_median(cur);
-	cpy = *cur;
-	cpy.ops = vector_init(&ops_up);
-	if (split_up(&cpy, rotated, median, *pushed))
-		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
-	cpy = *cur;
-	cpy.ops = vector_init(&ops_down);
-	if (split_down(&cpy, &rotated_d, median, *pushed))
-		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
-	if (ops_up.size > ops_down.size)
-		if (vector_append_elems(cur->ops, ops_down.data, ops_down.size))
-			return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
-	if (ops_up.size > ops_down.size)
-		rotated && (*rotated = rotated_d);
-	else if (vector_append_elems(cur->ops, ops_up.data, ops_up.size))
-		return (vector_clear((vector_clear(&ops_down), &ops_up)), 1);
-	return (vector_clear((vector_clear(&ops_down), &ops_up)), 0);
-}
-*/
 static t_f_triable *const	g_strats[] = {
 	split_up,
 	split_down,

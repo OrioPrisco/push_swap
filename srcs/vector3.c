@@ -43,6 +43,6 @@ t_vector	*vector_move(t_vector *dest, t_vector *src)
 {
 	vector_clear(dest);
 	*dest = *src;
-	vector_clear(src);
+	ft_bzero(src, sizeof(*src));
 	return (src);
 }

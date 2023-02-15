@@ -52,10 +52,8 @@ t_sub_stacks	*destroy_sub_stacks(t_sub_stacks *stacks)
 //same for the other properties
 t_sub_stack	*move_substack(t_sub_stack *dest, t_sub_stack *src)
 {
-	vector_copy(vector_clear(dest->ops), src->ops);
-	vector_copy(vector_clear(dest->stack), src->stack);
-	free(vector_clear(src->ops));
-	free(vector_clear(src->stack));
+	free(vector_move(dest->ops, src->ops));
+	free(vector_move(dest->stack, src->stack));
 	dest->size = src->size;
 	dest->rotated = src->rotated;
 	dest->reversed = src->reversed;

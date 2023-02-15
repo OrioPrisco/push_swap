@@ -15,9 +15,7 @@
 
 t_vector	*vector_init(t_vector *vector)
 {
-	vector->size = 0;
-	vector->malloced_size = 0;
-	vector->data = 0;
+	ft_bzero(vector, sizeof(*vector));
 	return (vector);
 }
 

@@ -52,5 +52,6 @@ bool			vector_copy(t_vector *des, const t_vector *src);
 bool			vector_copy_n(t_vector *dest, const t_vector_data *src,
 					size_t n);
 t_vector		*vector_sort(t_vector *vector);
-
+//returns ptr to src so you can free it if needed
+t_vector		*vector_move(t_vector *dest, t_vector *src);
 #endif

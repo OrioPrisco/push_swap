@@ -38,3 +38,11 @@ t_vector	*vector_pop_n(t_vector *vector, size_t index, size_t n)
 	vector->size -= n;
 	return (vector);
 }
+
+t_vector	*vector_move(t_vector *dest, t_vector *src)
+{
+	vector_clear(dest);
+	*dest = *src;
+	vector_clear(src);
+	return (src);
+}

@@ -18,6 +18,8 @@
 
 bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 {
+	if (OUTPUT_DBG)
+		ft_printf("merging\n");
 	if (dest->reversed == src->reversed)
 	{
 		ft_printf("Merging unreversed stacks slices is not implemented !\n");

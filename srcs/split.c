@@ -17,6 +17,7 @@
 #include "try.h"
 #include <stdbool.h>
 #include <stdlib.h>
+#include "ft_printf.h"
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 static int	get_median(const t_sub_stack *slice)
@@ -114,6 +115,8 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 	int				params[2];
 
 	(void)_;
+	if (OUTPUT_DBG)
+		ft_printf("splitting\n");
 	params[1] = (cur->size / 2) + (cur->reversed && cur->size % 2);
 	params[0] = get_median(cur);
 	best = best_strat(cur, other, &g_split_strats, &params[0]);

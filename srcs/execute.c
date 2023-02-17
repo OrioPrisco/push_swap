@@ -12,6 +12,7 @@
 
 #include "push_swap.h"
 #include "vector.h"
+#include "ft_printf.h"
 
 //passing invalid PS op is UB
 static bool	execute_one(t_vector *a, t_vector *b, t_ps_ops op)
@@ -39,6 +40,20 @@ static bool	execute_one(t_vector *a, t_vector *b, t_ps_ops op)
 	return (execute_one(a, b, RRA) || execute_one(a, b, RRB));
 }
 
+static const char	*g_ps_ops_lowercase[] = {
+	"sa",
+	"sb",
+	"ss",
+	"pa",
+	"pb",
+	"ra",
+	"rb",
+	"rr",
+	"rra",
+	"rrb",
+	"rrr",
+};
+
 bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 	size_t *ops_executed)
 {
@@ -51,6 +66,8 @@ bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 	{
 		if (execute_one(a, b, ops->data[*ops_executed]))
 			return (1);
+		if (OUTPUT_DBG)
+			ft_printf("%s\n", g_ps_ops_lowercase[ops->data[*ops_executed]]);
 		++(*ops_executed);
 	}
 	return (0);

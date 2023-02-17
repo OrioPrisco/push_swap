@@ -13,6 +13,10 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+# ifndef OUTPUT_DBG
+#  define OUTPUT_DBG 0
+# endif
+
 # include "vector.h"
 # include <stdbool.h>
 

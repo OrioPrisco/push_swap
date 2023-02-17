@@ -33,7 +33,7 @@ NAME			=	push_swap
 
 OBJ_FOLDER		=	objs/
 
-CFLAGS			=	-Wall -Wextra -Werror -g
+CFLAGS			=	-Wall -Wextra -Werror -g -D OUTPUT_DBG=0
 
 SRC_FOLDER		=	srcs/
 

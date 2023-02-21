@@ -26,7 +26,6 @@ bool	rotate_down_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-
 	if (cur->rotated > destination)
 	{
 		if (vector_append_n(cur->ops, ROTATE_DOWN, cur->rotated - destination))
@@ -45,7 +44,6 @@ bool	rotate_up_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-
 	if (cur->rotated < destination)
 	{
 		if (vector_append_n(cur->ops, ROTATE_UP, destination - cur->rotated))

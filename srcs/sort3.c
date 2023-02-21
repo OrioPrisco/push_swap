@@ -50,6 +50,13 @@ static bool	sort3_size3p(t_vector *ops, t_order3 order)
 	return (vector_append(ops, SWAP) || sort3_size3p(ops, BCA));
 }
 
+bool	sort3_try(t_sub_stack *slice, t_sub_stack *unused, void *unused_)
+{
+	(void)unused;
+	(void)unused_;
+	return (sort3(slice));
+}
+
 bool	sort3(t_sub_stack *slice)
 {
 	t_order3	order;

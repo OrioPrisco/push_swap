@@ -18,5 +18,6 @@
 typedef struct s_sub_stack	t_sub_stack;
 
 bool	sort3(t_sub_stack *slice);
+bool	sort3_try(t_sub_stack *slice, t_sub_stack *_, void *__);
 
 #endif

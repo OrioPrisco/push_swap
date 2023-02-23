@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "stack.h"
 #include "vector.h"
 #include "ft_printf.h"
 
@@ -53,6 +54,17 @@ static const char	*g_ps_ops_lowercase[] = {
 	"rrb",
 	"rrr",
 };
+
+bool	execute_ps_ops_stacks(t_sub_stack *cur, t_sub_stack *other, t_env *env)
+{
+	if (cur->is_a == other->is_a)
+		return (ft_printf("Error ! both substacks are the a stack\n"), 1);
+	if (cur->is_a)
+		return (execute_ps_ops(cur->stack, other->stack, &env->ps_ops,
+				&env->ops_executed));
+	return (execute_ps_ops(other->stack, cur->stack, &env->ps_ops,
+			&env->ops_executed));
+}
 
 bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 	size_t *ops_executed)

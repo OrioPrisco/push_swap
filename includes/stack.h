@@ -47,6 +47,7 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_);
 //if *ops_executes is NULL, execute all operations in *ops
 bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 			size_t *ops_executed);
+bool	execute_ps_ops_stacks(t_sub_stack *cur, t_sub_stack *other, t_env *env);
 bool	execute_ps_ops_env(t_env *env);
 bool	unrotate(t_sub_stack *cur, t_sub_stack *other, void *_);
 #endif

@@ -42,6 +42,8 @@ bool	vector_append(t_vector *vector, t_vector_data data)
 
 t_vector	*vector_clear(t_vector *vector)
 {
+	if (!vector)
+		return (NULL);
 	free(vector->data);
 	vector->data = 0;
 	vector->size = 0;

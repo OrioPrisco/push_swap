@@ -64,6 +64,7 @@ bool	translate_stack_ops(t_sub_stack *cur, t_sub_stack *other, t_vector *ops)
 		{
 			if (vector_append(ops, merged_version(cur->ops->data[i])))
 				return (1);
+			vector_pop(other->ops, 0);
 		}
 		else
 			if (vector_append(ops, single_version(cur->ops->data[i],

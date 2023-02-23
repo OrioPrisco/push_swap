@@ -58,6 +58,7 @@ t_sub_stack	*move_substack(t_sub_stack *dest, t_sub_stack *src)
 	dest->rotated = src->rotated;
 	dest->reversed = src->reversed;
 	dest->is_a = src->is_a;
+	ft_bzero(src, sizeof(*src));
 	return (dest);
 }
 

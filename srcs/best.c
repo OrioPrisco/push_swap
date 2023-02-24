@@ -22,12 +22,15 @@ bool	copy_sub_stack(t_sub_stack *dest, const t_sub_stack *src)
 	*dest = *src;
 	dest->stack = malloc(sizeof(*dest->stack));
 	dest->ops = malloc(sizeof(*dest->ops));
-	if (!dest->stack || ! dest->ops)
+	dest->rotated = malloc(sizeof(*dest->rotated));
+	if (!dest->stack || !dest->ops || !dest->rotated)
 	{
 		free(dest->stack);
 		free(dest->ops);
+		free(dest->rotated);
 		return (1);
 	}
+	*dest->rotated = *src->rotated;
 	if (vector_copy(dest->stack, src->stack)
 		|| vector_copy(dest->ops, src->ops))
 	{
@@ -55,7 +58,8 @@ t_sub_stack	*move_substack(t_sub_stack *dest, t_sub_stack *src)
 	free(vector_move(dest->ops, src->ops));
 	free(vector_move(dest->stack, src->stack));
 	dest->size = src->size;
-	dest->rotated = src->rotated;
+	*dest->rotated = *src->rotated;
+	free(src->rotated);
 	dest->reversed = src->reversed;
 	dest->is_a = src->is_a;
 	ft_bzero(src, sizeof(*src));

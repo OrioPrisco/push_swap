@@ -51,7 +51,7 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 	if (unrotate(&cur, &other, NULL) || translate_stack_ops
 		(&cur, &other, &env->ps_ops) || execute_ps_ops_env(env))
 		return (vector_clear(&cur_ops), 1);
-	cur.rotated = 0;
+	*cur.rotated = 0;
 	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env)
 		|| merge_stacks(&cur, &other) || translate_stack_ops
 		(&cur, &other, &env->ps_ops) || translate_stack_ops

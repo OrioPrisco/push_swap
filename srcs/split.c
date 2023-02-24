@@ -60,7 +60,7 @@ static bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
 			return (1);
 	}
-	cur->rotated = rotated;
+	*cur->rotated = rotated;
 	other->reversed = !cur->reversed;
 	return (0);
 }
@@ -77,17 +77,17 @@ static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 	median = ((int *)params)[0];
 	to_push = ((int *)params)[1];
 	i = 0;
-	cur->rotated = 0;
+	*cur->rotated = 0;
 	cur->size -= (other->size = to_push);
 	while (to_push)
 	{
 		if ((cur->stack->data[i] < median) ^ cur->reversed)
 		{
-			if ((cur->rotated++, to_push--, vector_append(cur->ops, PUSH))
+			if (((*cur->rotated)++, to_push--, vector_append(cur->ops, PUSH))
 				|| (to_push && vector_append(cur->ops, ROTATE_DOWN)))
 				return (1);
 		}
-		else if (cur->rotated++, vector_append(cur->ops, ROTATE_DOWN))
+		else if ((*cur->rotated)++, vector_append(cur->ops, ROTATE_DOWN))
 			return (1);
 		if (i-- == 0)
 			i = cur->stack->size - 1;

@@ -18,6 +18,16 @@
 #include "debug.h"
 #include "push_swap.h"
 
+static void	init_substack(t_sub_stack *substack, t_vector *ops, t_env *env,
+	bool is_a)
+{
+	vector_init(ops);
+	if (is_a)
+		*substack = (t_sub_stack){&env->a, ops, env->a.size, &env->rot_a, 0, 1};
+	else
+		*substack = (t_sub_stack){&env->b, ops, env->b.size, &env->rot_b, 0, 0};
+}
+
 int	main(int argc, char **argv)
 {
 	t_env			env;
@@ -30,10 +40,8 @@ int	main(int argc, char **argv)
 		return (0);
 	if (init_env(argc - 1, argv + 1, &env))
 		return (1);
-	vector_init(&ops);
-	vector_init(&ops_b);
-	slice = (t_sub_stack){&env.a, &ops, env.a.size, 0, false, 1};
-	slice_b = (t_sub_stack){&env.b, &ops_b, env.b.size, 0, false, 0};
+	init_substack(&slice, &ops, &env, true);
+	init_substack(&slice_b, &ops_b, &env, false);
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),
 			merge_ops(&env.ps_ops), 0))
 		ft_printf("error !\n");

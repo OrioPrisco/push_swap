@@ -115,10 +115,11 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 	int				params[2];
 
 	(void)_;
-	if (OUTPUT_DBG)
-		ft_printf("splitting\n");
 	params[1] = (cur->size / 2) + (cur->reversed && cur->size % 2);
 	params[0] = get_median(cur);
+	if (OUTPUT_DBG)
+		ft_printf("splitting %u (%u/%u)\n", params[1], cur->size,
+			cur->stack->size);
 	best = best_strat(cur, other, &g_split_strats, &params[0]);
 	if (!best)
 		return (1);

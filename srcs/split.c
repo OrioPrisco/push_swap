@@ -68,8 +68,8 @@ static bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 	to_push = ((int *)params)[1];
 	i = 0;
 	rotated = 0;
-	other->size = to_push;
 	cur->size -= to_push;
+	other->size += to_push;
 	while (to_push)
 	{
 		if ((cur->stack->data[i++] < median) ^ cur->reversed)
@@ -80,8 +80,7 @@ static bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
 			return (1);
 	}
-	*cur->rotated = rotated;
-	other->reversed = !cur->reversed;
+	*cur->rotated += (*cur->rotated + rotated) % cur->stack->size;
 	return (0);
 }
 
@@ -93,15 +92,17 @@ static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 	size_t	i;
 	int		median;
 	int		to_push;
+	size_t	index;
 
+	index = cur->ops->size;
 	median = ((int *)params)[0];
 	to_push = ((int *)params)[1];
-	i = 0;
-
-	cur->size -= (other->size = to_push);
+	i = cur->stack->size;
+	cur->size -= to_push;
+	other->size += to_push;
 	while (to_push)
 	{
-		if ((cur->stack->data[i] < median) ^ cur->reversed)
+		if ((cur->stack->data[i-- % cur->stack->size] < median) ^ cur->reversed)
 		{
 			if ((to_push--, vector_append(cur->ops, PUSH))
 				|| (to_push && vector_append(cur->ops, ROTATE_DOWN)))
@@ -109,44 +110,73 @@ static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 		}
 		else if (vector_append(cur->ops, ROTATE_DOWN))
 			return (1);
-		if (i-- == 0)
-			i = cur->stack->size - 1;
 	}
-	*cur->rotated = 0;// # of ROTATE - # of PUSH after the first ROTATE
-	other->reversed = !cur->reversed;
+	*cur->rotated = vector_count_elems(cur->ops, ROTATE_DOWN, index)
+		- vector_count_elems(cur->ops, PUSH, index);
 	return (0);
 }
 
-/*
-//TODO get median for each one
 bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 {
-	int	*params;
-	params = params_;
-	return (split_up(cur, other, params) )
-}
-//TODO get median for each one
-bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params)
-{
-	t_sub_stacks	*copy;
-	t_vector		temp;
+	int				*params;
+	t_sub_stacks	*try;
+	t_vector		ops;
 
-	copy = try_strat(cur, other, unrotate, NULL);
-	if (!copy)
+	params = params_;
+	try = try_strat(cur, other, split_up, params);
+	vector_init(&ops);
+	if (!try)
 		return (1);
-	if (vector_copy(vector_clear(cur->ops), copy->cur.ops)
-		|| translate_stack_ops(&copy->cur, &copy-> other, vector_init(&temp))
-		|| execute_ps_ops(copy->cur.ops, copy->other.ops, &temp, NULL)
-		|| split_up(&copy->cur, &copy->other, params))
-		return (1);
-	return (vector_append_elems
-		(cur->ops, copy->cur.ops->data, copy->cur.ops->size));
+	if (vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+		|| translate_stack_ops(&try->cur, &try->other, &ops)
+		|| (cur->is_a && execute_ps_ops(try->cur.stack, try->other.stack,
+				&ops, NULL))
+		|| (!cur->is_a && execute_ps_ops(try->other.stack, try->cur.stack,
+				&ops, NULL))
+		|| split_down(&try->cur, &try->other, params + 2)
+		|| vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+	)
+		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
+	cur->size = try->cur.size;
+	*cur->rotated = *try->cur.rotated;
+	other->size = try->other.size;
+	*other->rotated = *try->other.rotated;
+	free(destroy_sub_stacks(try));
+	return (0);
 }
-*/
+
+bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
+{
+	int				*params;
+	t_sub_stacks	*try;
+	t_vector		ops;
+
+	params = params_;
+	try = try_strat(cur, other, split_down, params + 2);
+	vector_init(&ops);
+	if (!try)
+		return (1);
+	if (vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+		|| translate_stack_ops(&try->cur, &try->other, &ops)
+		|| (cur->is_a && execute_ps_ops(try->cur.stack, try->other.stack,
+				&ops, NULL))
+		|| (!cur->is_a && execute_ps_ops(try->other.stack, try->cur.stack,
+				&ops, NULL))
+		|| split_up(&try->cur, &try->other, params)
+		|| vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+	)
+		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
+	cur->size = try->cur.size;
+	*cur->rotated = *try->cur.rotated;
+	other->size = try->other.size;
+	*other->rotated = *try->other.rotated;
+	free(destroy_sub_stacks(try));
+	return (0);
+}
 
 static t_f_triable *const	g_strats[] = {
-	split_up,
-	split_down,
+	split_up_down,
+	split_down_up,
 };
 
 static const t_funcs		g_split_strats = {
@@ -165,6 +195,8 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 	(void)_;
 	if (get_params(&params[0], cur))
 		return (1);
+	other->size = 0;
+	*other->rotated = 0;
 	if (OUTPUT_DBG)
 		ft_printf("splitting %u (%u/%u)\n", params[1], cur->size,
 			cur->stack->size);
@@ -173,6 +205,7 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 		return (1);
 	move_substack(cur, &best->cur);
 	move_substack(other, &best->other);
+	other->reversed = !cur->reversed;
 	free(best);
 	return (0);
 }

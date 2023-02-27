@@ -46,3 +46,16 @@ t_vector	*vector_move(t_vector *dest, t_vector *src)
 	ft_bzero(src, sizeof(*src));
 	return (src);
 }
+
+size_t	vector_count_elems(t_vector *vector, t_vector_data data, size_t index)
+{
+	size_t	total;
+
+	total = 0;
+	while (index < vector->size)
+	{
+		if (vector->data[index++] == data)
+			total++;
+	}
+	return (total);
+}

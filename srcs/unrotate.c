@@ -91,14 +91,8 @@ bool	unrotate(t_sub_stack *cur, t_sub_stack *other, void *_)
 	(void)_;
 	if (cur->size == cur->stack->size || *cur->rotated % cur->stack->size == 0)
 	{
-		if (OUTPUT_DBG)
-			ft_printf("already unrotated %u(%u/%u)\n", *cur->rotated, cur->size,
-				cur->stack->size);
 		*cur->rotated = 0;
 		return (0);
 	}
-	if (OUTPUT_DBG)
-		ft_printf("unrotating by %u(%u/%u)\n", *cur->rotated, cur->size,
-			cur->stack->size);
 	return (rotate_to(cur, other, &zero));
 }

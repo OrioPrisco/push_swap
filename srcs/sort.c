@@ -18,9 +18,6 @@
 
 bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 {
-	if (OUTPUT_DBG)
-		ft_printf("merging start (%u/%u) => (%u/%u)\n", dest->size,
-			dest->stack->size, src->size, src->stack->size);
 	if (dest->reversed == src->reversed)
 	{
 		ft_printf("Merging unreversed stacks slices is not implemented !\n");
@@ -29,8 +26,6 @@ bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 	if (unrotate(dest, src, NULL) || unrotate(src, dest, NULL)
 		|| vector_append_n(src->ops, PUSH, src->size))
 		return (1);
-	if (OUTPUT_DBG)
-		ft_printf("merging end\n");
 	return (0);
 }
 

@@ -41,20 +41,6 @@ static bool	execute_one(t_vector *a, t_vector *b, t_ps_ops op)
 	return (execute_one(a, b, RRA) || execute_one(a, b, RRB));
 }
 
-static const char	*g_ps_ops_lowercase[] = {
-	"sa",
-	"sb",
-	"ss",
-	"pa",
-	"pb",
-	"ra",
-	"rb",
-	"rr",
-	"rra",
-	"rrb",
-	"rrr",
-};
-
 bool	execute_ps_ops_stacks(t_sub_stack *cur, t_sub_stack *other, t_env *env)
 {
 	if (cur->is_a == other->is_a)
@@ -78,8 +64,6 @@ bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 	{
 		if (execute_one(a, b, ops->data[*ops_executed]))
 			return (1);
-		if (OUTPUT_DBG)
-			ft_printf("%s\n", g_ps_ops_lowercase[ops->data[*ops_executed]]);
 		++(*ops_executed);
 	}
 	return (0);

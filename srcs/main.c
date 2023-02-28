@@ -45,8 +45,6 @@ int	main(int argc, char **argv)
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),
 			merge_ops(&env.ps_ops), 0))
 		ft_printf("error !\n");
-	if (!OUTPUT_DBG)
-		output_ps_ops(&env.ps_ops);
 	vector_clear(&env.a);
 	vector_clear(&env.b);
 	vector_clear(slice.ops);

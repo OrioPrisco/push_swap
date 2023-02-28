@@ -26,7 +26,8 @@ bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 		ft_printf("Merging unreversed stacks slices is not implemented !\n");
 		return (1);
 	}
-	if (vector_append_n(src->ops, PUSH, src->size))
+	if (unrotate(dest, src, NULL) || unrotate(src, dest, NULL)
+		|| vector_append_n(src->ops, PUSH, src->size))
 		return (1);
 	if (OUTPUT_DBG)
 		ft_printf("merging end\n");
@@ -42,16 +43,17 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 
 	cur.ops = vector_init(&cur_ops);
 	if (cur.size <= 3)
-		return ((sort3(&cur) || translate_stack_ops(&cur, &other, &env->ps_ops)
+		return ((unrotate(&cur, &other, NULL) || sort3(&cur)
+				|| translate_stack_ops(&cur, &other, &env->ps_ops)
 				|| (vector_clear(&cur_ops), 0)
 				|| execute_ps_ops_env(env)) && (vector_clear(&cur_ops), 1));
 	if (split_stack(&cur, &other, NULL) || translate_stack_ops
 		(&cur, &other, &env->ps_ops) || execute_ps_ops_env(env))
 		return (vector_clear(&cur_ops), 1);
-	if (unrotate(&cur, &other, NULL) || translate_stack_ops
-		(&cur, &other, &env->ps_ops) || execute_ps_ops_env(env))
-		return (vector_clear(&cur_ops), 1);
-	*cur.rotated = 0;
+//	if (unrotate(&cur, &other, NULL) || translate_stack_ops
+//		(&cur, &other, &env->ps_ops) || execute_ps_ops_env(env))
+//		return (vector_clear(&cur_ops), 1);
+//	*cur.rotated = 0;
 	if (sort_stacks(cur, other, env) || sort_stacks(other, cur, env)
 		|| merge_stacks(&cur, &other) || translate_stack_ops
 		(&cur, &other, &env->ps_ops) || translate_stack_ops

@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 
 //passing invalid PS op is UB
+//just do an actual swap for SA and SB ?
 static bool	execute_one(t_vector *a, t_vector *b, t_ps_ops op)
 {
 	if (op == SA)

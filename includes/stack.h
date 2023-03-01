@@ -24,7 +24,8 @@ typedef struct s_sub_stack
 	t_vector	*stack;
 	t_vector	*ops;
 	size_t		size;
-	size_t		*rotated;
+	size_t		*global_rot;
+	size_t		local_rot;
 	bool		reversed;
 	bool		is_a;
 }	t_sub_stack;

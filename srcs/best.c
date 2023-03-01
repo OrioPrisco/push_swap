@@ -22,15 +22,16 @@ bool	copy_sub_stack(t_sub_stack *dest, const t_sub_stack *src)
 	*dest = *src;
 	dest->stack = malloc(sizeof(*dest->stack));
 	dest->ops = malloc(sizeof(*dest->ops));
-	dest->rotated = malloc(sizeof(*dest->rotated));
-	if (!dest->stack || !dest->ops || !dest->rotated)
+	dest->global_rot = malloc(sizeof(*dest->global_rot));
+	if (!dest->stack || !dest->ops || !dest->global_rot)
 	{
 		free(dest->stack);
 		free(dest->ops);
-		free(dest->rotated);
+		free(dest->global_rot);
 		return (1);
 	}
-	*dest->rotated = *src->rotated;
+	*dest->global_rot = *src->global_rot;
+	dest->local_rot = src->local_rot;
 	if (vector_copy(dest->stack, src->stack)
 		|| vector_copy(dest->ops, src->ops))
 	{
@@ -47,19 +48,18 @@ t_sub_stacks	*destroy_sub_stacks(t_sub_stacks *stacks)
 	free(vector_clear(stacks->cur.ops));
 	free(vector_clear(stacks->other.stack));
 	free(vector_clear(stacks->other.ops));
+	ft_bzero(stacks, sizeof(*stacks));
 	return (stacks);
 }
 
-//is it truly necessary to move the stacks ?
-//I don't think I'm gonna try something that commts move...
-//same for the other properties
 t_sub_stack	*move_substack(t_sub_stack *dest, t_sub_stack *src)
 {
 	free(vector_move(dest->ops, src->ops));
 	free(vector_move(dest->stack, src->stack));
 	dest->size = src->size;
-	*dest->rotated = *src->rotated;
-	free(src->rotated);
+	*dest->global_rot = *src->global_rot;
+	free(src->global_rot);
+	dest->local_rot = src->local_rot;
 	dest->reversed = src->reversed;
 	dest->is_a = src->is_a;
 	ft_bzero(src, sizeof(*src));

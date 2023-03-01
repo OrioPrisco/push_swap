@@ -20,6 +20,14 @@
 #include "ft_printf.h"
 #include "libft.h"
 
+static size_t	get_rot(const t_sub_stack *slice)
+{
+	if (slice->local_rot <= *slice->global_rot)
+		return ((*slice->global_rot - slice->local_rot) % slice->stack->size);
+	return (*slice->global_rot + slice->stack->size
+		- (slice->local_rot - slice->stack->size));
+}
+
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 //calculates parameters for splitting
 //{median, to_push_top, median, to_push_bot}
@@ -32,10 +40,10 @@ static bool	get_params(int *params, const t_sub_stack *slice)
 
 	if (vector_init(&top), vector_init(&bot), vector_init(&all), 0)
 		return (1);
-	if ((slice->size > *slice->rotated && vector_copy_n
-			(&top, slice->stack->data, slice->size - *slice->rotated))
-		|| (slice->rotated && vector_copy_n(&bot, slice->stack->data
-				+ (slice->stack->size - *slice->rotated), *slice->rotated))
+	if ((slice->size > get_rot(slice) && vector_copy_n
+			(&top, slice->stack->data, slice->size - get_rot(slice)))
+		|| (get_rot(slice) && vector_copy_n(&bot, slice->stack->data
+				+ (slice->stack->size - get_rot(slice)), get_rot(slice)))
 		|| vector_copy(&all, &top)
 		|| vector_append_elems(&all, bot.data, bot.size))
 		return (vector_clear(&all), vector_clear(&top), vector_clear(&bot), 1);
@@ -80,39 +88,39 @@ static bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
 			return (1);
 	}
-	*cur->rotated += (*cur->rotated + rotated) % cur->stack->size;
+	*cur->global_rot = (*cur->global_rot + rotated) % cur->stack->size;
 	return (0);
 }
 
 //TODO : on reverse rotate, if the next elem also is to be pushed,
 //		push the smallest first, by maybe delaying the push
 //params : int[2] {median, to_push}
+//FIXME : substraction at the end might be -1
 static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 {
 	size_t	i;
 	int		median;
 	int		to_push;
-	size_t	index;
+	size_t	rotated;
 
-	index = cur->ops->size;
 	median = ((int *)params)[0];
 	to_push = ((int *)params)[1];
 	i = cur->stack->size;
 	cur->size -= to_push;
 	other->size += to_push;
+	rotated = 0;
 	while (to_push)
 	{
 		if ((cur->stack->data[i-- % cur->stack->size] < median) ^ cur->reversed)
 		{
-			if ((to_push--, vector_append(cur->ops, PUSH))
-				|| (to_push && vector_append(cur->ops, ROTATE_DOWN)))
+			if ((to_push--, vector_append(cur->ops, PUSH)) || (to_push
+						&& (rotated++, vector_append(cur->ops, ROTATE_DOWN))))
 				return (1);
 		}
-		else if (vector_append(cur->ops, ROTATE_DOWN))
+		else if (rotated ++, vector_append(cur->ops, ROTATE_DOWN))
 			return (1);
 	}
-	*cur->rotated = vector_count_elems(cur->ops, ROTATE_DOWN, index)
-		- vector_count_elems(cur->ops, PUSH, index);
+	*cur->global_rot = (*cur->global_rot - rotated) % cur->stack->size;
 	return (0);
 }
 
@@ -138,11 +146,11 @@ bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 	)
 		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
 	cur->size = try->cur.size;
-	*cur->rotated = *try->cur.rotated;
+	*cur->global_rot = *try->cur.global_rot;
 	other->size = try->other.size;
-	*other->rotated = *try->other.rotated;
-	free(destroy_sub_stacks(try));
-	return (0);
+	*other->global_rot = *try->other.global_rot;
+	other->local_rot = *other->global_rot;
+	return (free(destroy_sub_stacks(try)), 0);
 }
 
 bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
@@ -167,11 +175,11 @@ bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
 	)
 		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
 	cur->size = try->cur.size;
-	*cur->rotated = *try->cur.rotated;
+	*cur->global_rot = *try->cur.global_rot;
 	other->size = try->other.size;
-	*other->rotated = *try->other.rotated;
-	free(destroy_sub_stacks(try));
-	return (0);
+	*other->global_rot = *try->other.global_rot;
+	other->local_rot = *other->global_rot;
+	return (free(destroy_sub_stacks(try)), 0);
 }
 
 static t_f_triable *const	g_strats[] = {
@@ -196,10 +204,6 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 	if (get_params(&params[0], cur))
 		return (1);
 	other->size = 0;
-	*other->rotated = 0;
-	if (OUTPUT_DBG)
-		ft_printf("splitting %u (%u/%u)\n", params[1], cur->size,
-			cur->stack->size);
 	best = best_strat(cur, other, &g_split_strats, &params[0]);
 	if (!best)
 		return (1);

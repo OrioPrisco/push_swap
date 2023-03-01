@@ -1,0 +1,18 @@
+make print substacks debug fct
+make sort not systematically unrotate
+temp : make split unrotate
+then
+	make best_strat consider translation
+	make more complex split, doing a half upp half down or the opposite
+
+===
+local offset is where we want to rotate to when unrotating
+global rotatedness is how many rotate up / rotate down where executed
+
+when splitting : set new substacks offset to current rotatedness
+increasing or decreasing rotatedness on push seems useless ?
+because when we get back to the next substack we will have pushed all the elements back, meaning everythng should be back how it was
+rotatedness can be calculated with global_rot - local_rot % stack->size
+
+
+split_stacks doesn't modify global rot ?

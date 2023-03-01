@@ -26,15 +26,16 @@ bool	rotate_down_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (*cur->rotated > destination)
+	if (*cur->global_rot > destination)
 	{
-		if (vector_append_n(cur->ops, ROTATE_DOWN, *cur->rotated - destination))
+		if (vector_append_n(cur->ops, ROTATE_DOWN, *cur->global_rot
+				- destination))
 			return (1);
 	}
 	else if (vector_append_n(cur->ops, ROTATE_DOWN,
-			cur->stack->size - (*cur->rotated - destination)))
+			cur->stack->size - (*cur->global_rot - destination)))
 		return (1);
-	*cur->rotated = destination;
+	*cur->global_rot = destination;
 	return (0);
 }
 
@@ -44,15 +45,16 @@ bool	rotate_up_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (*cur->rotated < destination)
+	if (*cur->global_rot < destination)
 	{
-		if (vector_append_n(cur->ops, ROTATE_UP, destination - *cur->rotated))
+		if (vector_append_n(cur->ops, ROTATE_UP, destination
+				- *cur->global_rot))
 			return (1);
 	}
 	else if (vector_append_n(cur->ops, ROTATE_UP,
-			cur->stack->size - (destination - *cur->rotated)))
+			cur->stack->size - (destination - *cur->global_rot)))
 		return (1);
-	*cur->rotated = destination;
+	*cur->global_rot = destination;
 	return (0);
 }
 
@@ -72,7 +74,7 @@ bool	rotate_to(t_sub_stack *cur, t_sub_stack *other, void *destination)
 	size_t			dest;
 
 	dest = *(size_t *)destination;
-	if (dest == *cur->rotated)
+	if (dest == *cur->global_rot)
 		return (0);
 	best = best_strat(cur, other, &g_rotate_strats, destination);
 	if (!best)
@@ -89,9 +91,10 @@ bool	unrotate(t_sub_stack *cur, t_sub_stack *other, void *_)
 
 	zero = 0;
 	(void)_;
-	if (cur->size == cur->stack->size || *cur->rotated % cur->stack->size == 0)
+	if (cur->size == cur->stack->size || *cur->global_rot % cur->stack->size
+		== cur->local_rot)
 	{
-		*cur->rotated = 0;
+		*cur->global_rot = cur->local_rot;
 		return (0);
 	}
 	return (rotate_to(cur, other, &zero));

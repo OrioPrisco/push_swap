@@ -38,7 +38,10 @@ bool	sort_stacks(t_sub_stack cur, t_sub_stack other, t_env *env)
 
 	cur.ops = vector_init(&cur_ops);
 	if (cur.size <= 3)
-		return ((unrotate(&cur, &other, NULL) || sort3(&cur)
+		return ((unrotate(&cur, &other, NULL)
+				|| translate_stack_ops(&cur, &other, &env->ps_ops)
+				|| execute_ps_ops_env(env)
+				|| sort3(&cur)
 				|| translate_stack_ops(&cur, &other, &env->ps_ops)
 				|| (vector_clear(&cur_ops), 0)
 				|| execute_ps_ops_env(env)) && (vector_clear(&cur_ops), 1));

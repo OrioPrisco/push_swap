@@ -23,9 +23,11 @@ static void	init_substack(t_sub_stack *substack, t_vector *ops, t_env *env,
 {
 	vector_init(ops);
 	if (is_a)
-		*substack = (t_sub_stack){&env->a, ops, env->a.size, &env->rot_a, 0, 1};
+		*substack =
+		(t_sub_stack){&env->a, ops, env->a.size, &env->rot_a, 0, 0, 1};
 	else
-		*substack = (t_sub_stack){&env->b, ops, env->b.size, &env->rot_b, 0, 0};
+		*substack =
+		(t_sub_stack){&env->b, ops, env->b.size, &env->rot_b, 0, 0, 0};
 }
 
 int	main(int argc, char **argv)
@@ -43,7 +45,7 @@ int	main(int argc, char **argv)
 	init_substack(&slice, &ops, &env, true);
 	init_substack(&slice_b, &ops_b, &env, false);
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),
-			merge_ops(&env.ps_ops), 0))
+			merge_ops(&env.ps_ops), output_ps_ops(&env.ps_ops), 0))
 		ft_printf("error !\n");
 	vector_clear(&env.a);
 	vector_clear(&env.b);

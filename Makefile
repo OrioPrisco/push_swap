@@ -65,7 +65,7 @@ $(OBJ_FOLDER)%.o : $(SRC_FOLDER)%.c Makefile
 	$(CC) -c $(CFLAGS) $(addprefix -I,$(HEADERS_FOLDER)) -MMD -MP $< -o $@
 
 clean:
-	rm -f $(SERVER_OBJS) $(CLIENT_OBJS) $(DEPENDS)
+	rm -f $(OBJS) $(DEPENDS)
 	for lib in $(shell dirname $(LIBS)); do \
 		make -C $$lib clean; \
 	done

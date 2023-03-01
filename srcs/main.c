@@ -23,11 +23,11 @@ static void	init_substack(t_sub_stack *substack, t_vector *ops, t_env *env,
 {
 	vector_init(ops);
 	if (is_a)
-		*substack =
-		(t_sub_stack){&env->a, ops, env->a.size, &env->rot_a, 0, 0, 1};
+		*substack = (t_sub_stack)
+		{&env->a, ops, env->a.size, &env->rot_a, 0, 0, 1};
 	else
-		*substack =
-		(t_sub_stack){&env->b, ops, env->b.size, &env->rot_b, 0, 0, 0};
+		*substack = (t_sub_stack)
+		{&env->b, ops, env->b.size, &env->rot_b, 0, 0, 0};
 }
 
 int	main(int argc, char **argv)

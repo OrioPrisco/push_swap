@@ -114,7 +114,7 @@ static bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
 		if ((cur->stack->data[i-- % cur->stack->size] < median) ^ cur->reversed)
 		{
 			if ((to_push--, vector_append(cur->ops, PUSH)) || (to_push
-						&& (rotated++, vector_append(cur->ops, ROTATE_DOWN))))
+					&& (rotated++, vector_append(cur->ops, ROTATE_DOWN))))
 				return (1);
 		}
 		else if (rotated ++, vector_append(cur->ops, ROTATE_DOWN))

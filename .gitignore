@@ -7,3 +7,4 @@ checker_linux
 push_swap_visualizer
 imgui.ini
 .nfs*
+.gdb_history

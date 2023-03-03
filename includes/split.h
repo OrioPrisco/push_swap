@@ -27,5 +27,7 @@ bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params);
 bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params);
 bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_);
 bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_);
+bool	split_just_up(t_sub_stack *cur, t_sub_stack *other, void *params_);
+bool	split_just_down(t_sub_stack *cur, t_sub_stack *other, void *params_);
 
 #endif

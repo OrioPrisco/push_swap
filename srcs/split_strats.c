@@ -73,3 +73,61 @@ bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
 	other->local_rot = *other->global_rot;
 	return (vector_clear(&ops), free(destroy_sub_stacks(try)), 0);
 }
+
+bool	split_just_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
+{
+	t_split_info	params;
+	t_split_info	*source;
+	t_sub_stacks	*try;
+	t_vector		ops;
+
+	source = params_;
+	params = (t_split_info){source->median, source[0].push + source[1].push};
+	try = try_strat(cur, other, unrotate, NULL);
+	vector_init(&ops);
+	if (!try)
+		return (1);
+	if (vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+		|| translate_stack_ops(&try->cur, &try->other, &ops) || (cur->is_a
+			&& execute_ps_ops(try->cur.stack, try->other.stack, &ops, NULL))
+		|| (!cur->is_a && execute_ps_ops(try->other.stack, try->cur.stack,
+				&ops, NULL)) || split_up(&try->cur, &try->other, &params)
+		|| vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+	)
+		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
+	cur->size = try->cur.size;
+	*cur->global_rot = *try->cur.global_rot;
+	other->size = try->other.size;
+	*other->global_rot = *try->other.global_rot;
+	other->local_rot = *other->global_rot;
+	return (vector_clear(&ops), free(destroy_sub_stacks(try)), 0);
+}
+
+bool	split_just_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
+{
+	t_split_info	params;
+	t_split_info	*source;
+	t_sub_stacks	*try;
+	t_vector		ops;
+
+	source = params_;
+	params = (t_split_info){source->median, source[0].push + source[1].push};
+	try = try_strat(cur, other, unrotate, NULL);
+	vector_init(&ops);
+	if (!try)
+		return (1);
+	if (vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+		|| translate_stack_ops(&try->cur, &try->other, &ops) || (cur->is_a
+			&& execute_ps_ops(try->cur.stack, try->other.stack, &ops, NULL))
+		|| (!cur->is_a && execute_ps_ops(try->other.stack, try->cur.stack,
+				&ops, NULL)) || split_down(&try->cur, &try->other, &params)
+		|| vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
+	)
+		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
+	cur->size = try->cur.size;
+	*cur->global_rot = *try->cur.global_rot;
+	other->size = try->other.size;
+	*other->global_rot = *try->other.global_rot;
+	other->local_rot = *other->global_rot;
+	return (vector_clear(&ops), free(destroy_sub_stacks(try)), 0);
+}

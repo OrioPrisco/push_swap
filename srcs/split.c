@@ -55,6 +55,8 @@ static bool	get_params(t_split_info *info, const t_sub_stack *slice)
 static t_f_triable *const	g_strats[] = {
 	split_up_down,
 	split_down_up,
+	split_just_up,
+	split_just_down,
 };
 
 static const t_funcs		g_split_strats = {

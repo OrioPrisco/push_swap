@@ -73,6 +73,6 @@ bool	vector_copy_n(t_vector *dest, const t_vector_data *src, size_t n)
 		return (1);
 	ft_memcpy(dest->data, src, n * sizeof(*src));
 	dest->size = n;
-	dest->malloced_size = n;
+	dest->capacity = n;
 	return (0);
 }

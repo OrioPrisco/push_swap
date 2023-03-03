@@ -21,7 +21,7 @@ typedef int	t_vector_data;
 
 typedef struct s_vector {
 	size_t			size;
-	size_t			malloced_size;
+	size_t			capacity;
 	t_vector_data	*data;
 }	t_vector;
 

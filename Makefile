@@ -21,6 +21,8 @@ SRC				=	main.c\
 					debug.c\
 					env.c\
 					split.c\
+					split_op.c\
+					split_strats.c\
 					translate.c\
 					execute.c\
 					sort.c\

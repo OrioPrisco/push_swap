@@ -13,8 +13,9 @@
 #ifndef TRY_H
 # define TRY_H
 
-typedef struct s_sub_stack	t_sub_stack;
-typedef bool				t_f_triable (t_sub_stack *, t_sub_stack *, void *);
+# include "stack.h"
+
+typedef bool	t_f_triable (t_sub_stack *, t_sub_stack *, void *);
 
 typedef struct s_sub_stacks
 {

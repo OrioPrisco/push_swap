@@ -18,7 +18,7 @@
 
 bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 {
-	int				*params;
+	t_split_info	*params;
 	t_sub_stacks	*try;
 	t_vector		ops;
 
@@ -33,7 +33,7 @@ bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 				&ops, NULL))
 		|| (!cur->is_a && execute_ps_ops(try->other.stack, try->cur.stack,
 				&ops, NULL))
-		|| split_down(&try->cur, &try->other, params + 2)
+		|| split_down(&try->cur, &try->other, params + 1)
 		|| vector_append_elems(cur->ops, try->cur.ops->data, try->cur.ops->size)
 	)
 		return (free(destroy_sub_stacks(try)), vector_clear(&ops), 1);
@@ -47,12 +47,12 @@ bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 
 bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
 {
-	int				*params;
+	t_split_info	*params;
 	t_sub_stacks	*try;
 	t_vector		ops;
 
 	params = params_;
-	try = try_strat(cur, other, split_down, params + 2);
+	try = try_strat(cur, other, split_down, params + 1);
 	vector_init(&ops);
 	if (!try)
 		return (1);

@@ -23,7 +23,7 @@
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 //calculates parameters for splitting
 //{median, to_push_top, median, to_push_bot}
-static bool	get_params(int *params, const t_sub_stack *slice)
+static bool	get_params(t_split_info *info, const t_sub_stack *slice)
 {
 	t_vector	top;
 	t_vector	bot;
@@ -40,15 +40,15 @@ static bool	get_params(int *params, const t_sub_stack *slice)
 		|| vector_append_elems(&all, bot.data, bot.size))
 		return (vector_clear(&all), vector_clear(&top), vector_clear(&bot), 1);
 	vector_sort(&all);
-	ft_bzero(params, 4 * sizeof(*params));
-	params[0] = all.data[(all.size / 2)];
-	params[2] = all.data[(all.size / 2)];
+	ft_bzero(info, 2 * sizeof(*info));
+	info[0].median = all.data[(all.size / 2)];
+	info[1].median = all.data[(all.size / 2)];
 	i = -1;
 	while (++i < top.size)
-		((top.data[i] < params[0]) ^ slice->reversed) && params[1]++;
+		((top.data[i] < info[0].median) ^ slice->reversed) && info[0].push++;
 	i = -1;
 	while (++i < bot.size)
-		((bot.data[i] < params[2]) ^ slice->reversed) && params[3]++;
+		((bot.data[i] < info[1].median) ^ slice->reversed) && info[1].push++;
 	return (vector_clear(&all), vector_clear(&top), vector_clear(&bot), 0);
 }
 
@@ -68,7 +68,7 @@ static const t_funcs		g_split_strats = {
 bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 {
 	t_sub_stacks	*best;
-	int				params[4];
+	t_split_info	params[2];
 
 	(void)_;
 	if (get_params(&params[0], cur))

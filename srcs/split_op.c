@@ -20,25 +20,22 @@
 //		decide what op to translate into
 //		/!\unrotating is now left to the sorter, allowing to decouple the split
 //		and rotate logic
-//params : int[2] {median, to_push}
-bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
+bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
 {
-	size_t	rotated;
-	size_t	i;
-	int		median;
-	int		to_push;
+	size_t			rotated;
+	size_t			i;
+	t_split_info	params;
 
-	median = ((int *)params)[0];
-	to_push = ((int *)params)[1];
+	params = *(t_split_info *)params_;
 	i = 0;
 	rotated = 0;
-	cur->size -= to_push;
-	other->size += to_push;
-	while (to_push)
+	cur->size -= params.push;
+	other->size += params.push;
+	while (params.push)
 	{
-		if ((cur->stack->data[i++] < median) ^ cur->reversed)
+		if ((cur->stack->data[i++] < params.median) ^ cur->reversed)
 		{
-			if (to_push--, vector_append(cur->ops, PUSH))
+			if (params.push--, vector_append(cur->ops, PUSH))
 				return (1);
 		}
 		else if (rotated++, vector_append(cur->ops, ROTATE_UP))
@@ -50,26 +47,24 @@ bool	split_up(t_sub_stack *cur, t_sub_stack *other, void *params)
 
 //TODO : on reverse rotate, if the next elem also is to be pushed,
 //		push the smallest first, by maybe delaying the push
-//params : int[2] {median, to_push}
 //FIXME : substraction at the end might be -1
-bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params)
+bool	split_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 {
-	size_t	i;
-	int		median;
-	int		to_push;
-	size_t	rotated;
+	size_t			i;
+	size_t			rotated;
+	t_split_info	params;
 
-	median = ((int *)params)[0];
-	to_push = ((int *)params)[1];
+	params = *(t_split_info *)params_;
 	i = cur->stack->size;
-	cur->size -= to_push;
-	other->size += to_push;
+	cur->size -= params.push;
+	other->size += params.push;
 	rotated = 0;
-	while (to_push)
+	while (params.push)
 	{
-		if ((cur->stack->data[i-- % cur->stack->size] < median) ^ cur->reversed)
+		if ((cur->stack->data[i-- % cur->stack->size] < params.median)
+			^ cur->reversed)
 		{
-			if ((to_push--, vector_append(cur->ops, PUSH)) || (to_push
+			if ((params.push--, vector_append(cur->ops, PUSH)) || (params.push
 					&& (rotated++, vector_append(cur->ops, ROTATE_DOWN))))
 				return (1);
 		}

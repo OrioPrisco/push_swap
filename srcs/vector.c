@@ -33,7 +33,7 @@ bool	vector_allocate(t_vector *vector, size_t size)
 
 bool	vector_append(t_vector *vector, t_vector_data data)
 {
-	if (vector_maybe_grow(vector))
+	if (vector_ensure_capacity(vector, 1))
 		return (1);
 	vector->data[vector->size] = data;
 	vector->size++;
@@ -51,19 +51,24 @@ t_vector	*vector_clear(t_vector *vector)
 	return (vector);
 }
 
-bool	vector_maybe_grow(t_vector *vector)
+bool	vector_ensure_capacity(t_vector *vector, size_t size)
 {
 	t_vector_data	*new_data;
+	size_t			new_size;
 
-	if (vector->malloced_size == 0)
+	if (vector->malloced_size == 0 && size < DEFAULT_VECTOR_SIZE)
 		return (vector_allocate(vector, DEFAULT_VECTOR_SIZE));
-	if (vector->size != vector->malloced_size)
+	if (vector->malloced_size == 0)
+		return (vector_allocate(vector, size));
+	if (vector->size + size < vector->malloced_size)
 		return (0);
-	new_data = malloc(vector->malloced_size * sizeof(*vector->data) * 2);
+	new_size = vector->malloced_size / sizeof(*vector->data) * 2;
+	while (vector->size + size > new_size)
+		new_size *= 2;
+	new_data = malloc(new_size * sizeof(*vector->data));
 	if (!new_data)
 		return (1);
-	ft_memcpy(new_data, vector->data,
-		vector->size * sizeof(*vector->data));
+	ft_memcpy(new_data, vector->data, vector->size * sizeof(*vector->data));
 	free(vector->data);
 	vector->data = new_data;
 	vector->malloced_size *= 2;

@@ -40,7 +40,8 @@ bool			vector_append_elems(t_vector *vector, t_vector_data *data,
 //Frees all the memory inside the vector and resets the vector back to all 0s
 //Does not free the t_vector *
 t_vector		*vector_clear(t_vector *vector);
-bool			vector_maybe_grow(t_vector *vector);
+//ensures that there are size free spaces to insert elements in
+bool			vector_ensure_capacity(t_vector *vector, size_t size);
 t_vector_data	vector_pop(t_vector *vector, size_t index);
 //Maybe rename to delete_n ?
 t_vector		*vector_pop_n(t_vector *vector, size_t index, size_t n);

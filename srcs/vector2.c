@@ -27,7 +27,7 @@ t_vector_data	vector_pop(t_vector *vector, size_t index)
 //TODO : probably can avoid recopying the end of the data twice
 bool	vector_insert(t_vector *vector, size_t index, t_vector_data data)
 {
-	if (vector_maybe_grow(vector))
+	if (vector_ensure_capacity(vector, 1))
 		return (0);
 	ft_memmove(vector->data + index + 1, vector->data + index,
 		(vector->size - index) * sizeof(*vector->data));

@@ -17,57 +17,6 @@
 #include <stdlib.h>
 #include "libft.h"
 
-bool	copy_sub_stack(t_sub_stack *dest, const t_sub_stack *src)
-{
-	*dest = *src;
-	dest->stack = malloc(sizeof(*dest->stack));
-	dest->ops = malloc(sizeof(*dest->ops));
-	dest->global_rot = malloc(sizeof(*dest->global_rot));
-	if (!dest->stack || !dest->ops || !dest->global_rot)
-	{
-		free(dest->stack);
-		free(dest->ops);
-		free(dest->global_rot);
-		return (1);
-	}
-	*dest->global_rot = *src->global_rot;
-	dest->local_rot = src->local_rot;
-	if (vector_copy(dest->stack, src->stack)
-		|| vector_copy(dest->ops, src->ops))
-	{
-		free(vector_clear(dest->stack));
-		free(vector_clear(dest->ops));
-		return (1);
-	}
-	return (0);
-}
-
-t_sub_stacks	*destroy_sub_stacks(t_sub_stacks *stacks)
-{
-	free(vector_clear(stacks->cur.stack));
-	free(vector_clear(stacks->cur.ops));
-	free(vector_clear(stacks->other.stack));
-	free(vector_clear(stacks->other.ops));
-	free(stacks->cur.global_rot);
-	free(stacks->other.global_rot);
-	ft_bzero(stacks, sizeof(*stacks));
-	return (stacks);
-}
-
-t_sub_stack	*move_substack(t_sub_stack *dest, t_sub_stack *src)
-{
-	free(vector_move(dest->ops, src->ops));
-	free(vector_move(dest->stack, src->stack));
-	dest->size = src->size;
-	*dest->global_rot = *src->global_rot;
-	free(src->global_rot);
-	dest->local_rot = src->local_rot;
-	dest->reversed = src->reversed;
-	dest->is_a = src->is_a;
-	ft_bzero(src, sizeof(*src));
-	return (dest);
-}
-
 t_sub_stacks	*try_strat(const t_sub_stack *cur, const t_sub_stack *other,
 	t_f_triable *strat, void *params)
 {

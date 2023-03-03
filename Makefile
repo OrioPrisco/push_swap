@@ -30,6 +30,7 @@ SRC				=	main.c\
 					cancel.c\
 					merge.c\
 					best.c\
+					sub_stacks.c\
 					mod.c\
 
 NAME			=	push_swap

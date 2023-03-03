@@ -42,7 +42,7 @@ bool	split_up_down(t_sub_stack *cur, t_sub_stack *other, void *params_)
 	other->size = try->other.size;
 	*other->global_rot = *try->other.global_rot;
 	other->local_rot = *other->global_rot;
-	return (free(destroy_sub_stacks(try)), 0);
+	return (vector_clear(&ops), free(destroy_sub_stacks(try)), 0);
 }
 
 bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
@@ -71,5 +71,5 @@ bool	split_down_up(t_sub_stack *cur, t_sub_stack *other, void *params_)
 	other->size = try->other.size;
 	*other->global_rot = *try->other.global_rot;
 	other->local_rot = *other->global_rot;
-	return (free(destroy_sub_stacks(try)), 0);
+	return (vector_clear(&ops), free(destroy_sub_stacks(try)), 0);
 }

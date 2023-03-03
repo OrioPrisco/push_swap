@@ -80,6 +80,6 @@ bool	split_stack(t_sub_stack *cur, t_sub_stack *other, void *_)
 	move_substack(cur, &best->cur);
 	move_substack(other, &best->other);
 	other->reversed = !cur->reversed;
-	free(best);
+	free(destroy_sub_stacks(best));
 	return (0);
 }

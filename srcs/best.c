@@ -48,6 +48,8 @@ t_sub_stacks	*destroy_sub_stacks(t_sub_stacks *stacks)
 	free(vector_clear(stacks->cur.ops));
 	free(vector_clear(stacks->other.stack));
 	free(vector_clear(stacks->other.ops));
+	free(stacks->cur.global_rot);
+	free(stacks->other.global_rot);
 	ft_bzero(stacks, sizeof(*stacks));
 	return (stacks);
 }

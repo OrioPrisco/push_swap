@@ -68,6 +68,8 @@ bool	vector_copy(t_vector *dest, const t_vector *src)
 
 bool	vector_copy_n(t_vector *dest, const t_vector_data *src, size_t n)
 {
+	if (!n)
+		return (vector_init(dest), 0);
 	dest->data = malloc(n * sizeof(*src));
 	if (!dest->data)
 		return (1);

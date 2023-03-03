@@ -28,6 +28,7 @@ SRC				=	main.c\
 					cancel.c\
 					merge.c\
 					best.c\
+					mod.c\
 
 NAME			=	push_swap
 

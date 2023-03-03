@@ -19,14 +19,7 @@
 #include <stdlib.h>
 #include "ft_printf.h"
 #include "libft.h"
-
-static size_t	get_rot(const t_sub_stack *slice)
-{
-	if (slice->local_rot <= *slice->global_rot)
-		return ((*slice->global_rot - slice->local_rot) % slice->stack->size);
-	return (*slice->global_rot + slice->stack->size
-		- (slice->local_rot - slice->stack->size));
-}
+#include "mod.h"
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 //calculates parameters for splitting

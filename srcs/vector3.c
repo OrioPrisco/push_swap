@@ -13,21 +13,21 @@
 #include "vector.h"
 #include "libft.h"
 
-//TODO : make a better implementation
 bool	vector_append_n(t_vector *vector, t_vector_data data, size_t n)
 {
+	if (vector_ensure_capacity(vector, n))
+		return (1);
 	while (n--)
-		if (vector_append(vector, data))
-			return (1);
+		vector->data[vector->size++] = data;
 	return (0);
 }
 
-//TODO : make a better implementation
 bool	vector_append_elems(t_vector *vector, t_vector_data *data, size_t n)
 {
+	if (vector_ensure_capacity(vector, n))
+		return (1);
 	while (n--)
-		if (vector_append(vector, *data++))
-			return (1);
+		vector->data[vector->size++] = *data++;
 	return (0);
 }
 

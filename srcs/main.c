@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (0);
 	if (init_env(argc - 1, argv + 1, &env))
-		return (1);
+		return (destroy_env(&env), 1);
 	init_substack(&slice, &ops, &env, true);
 	init_substack(&slice_b, &ops_b, &env, false);
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),

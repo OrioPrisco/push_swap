@@ -19,6 +19,7 @@ static bool	duplicates(t_vector *vec)
 {
 	t_vector	sorted;
 	size_t		i;
+	int			dup;
 
 	if (vec->size < 2)
 		return (0);
@@ -28,7 +29,11 @@ static bool	duplicates(t_vector *vec)
 	while (i < sorted.size - 1)
 	{
 		if (sorted.data[i] == sorted.data[i + 1])
-			return (ft_printf("Duplicate Value : %d\n", sorted.data[i]));
+		{
+			dup = sorted.data[i];
+			vector_clear(&sorted);
+			return (ft_printf("Duplicate Value : %d\n", dup), 1);
+		}
 		i++;
 	}
 	vector_clear(&sorted);

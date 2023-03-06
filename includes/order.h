@@ -13,7 +13,8 @@
 #ifndef ORDER_H
 # define ORDER_H
 
-typedef struct s_vector	t_vector;
+typedef struct s_vector		t_vector;
+typedef struct s_sub_stack	t_sub_stack;
 
 typedef enum e_order3
 {
@@ -25,6 +26,6 @@ typedef enum e_order3
 	CBA,
 }	t_order3;
 
-t_order3	get_order3(const t_vector *vec, int reversed);
+t_order3	get_order3(const t_sub_stack *slice);
 
 #endif

@@ -12,20 +12,33 @@
 
 #include "order.h"
 #include "vector.h"
+#include "stack.h"
+#include "mod.h"
 
-t_order3	get_order3(const t_vector *vec, int reversed)
+t_order3	get_order3(const t_sub_stack *slice)
 {
-	if ((vec->data[0] > vec->data[1]) ^ reversed)
+	size_t			rot;
+	size_t			first;
+	size_t			second;
+	size_t			third;
+	const t_vector	*vec;
+
+	rot = get_rot(slice);
+	first = minus_mod(0, rot, slice->stack->size);
+	second = minus_mod(1, rot, slice->stack->size);
+	third = minus_mod(2, rot, slice->stack->size);
+	vec = slice->stack;
+	if ((vec->data[first] > vec->data[second]) ^ slice->reversed)
 	{
-		if ((vec->data[1] > vec->data[2]) ^ reversed)
+		if ((vec->data[second] > vec->data[third]) ^ slice->reversed)
 			return (CBA);
-		if ((vec->data[0] > vec->data[2]) ^ reversed)
+		if ((vec->data[first] > vec->data[third]) ^ slice->reversed)
 			return (CAB);
 		return (BAC);
 	}
-	if ((vec->data[1] < vec->data[2]) ^ reversed)
+	if ((vec->data[second] < vec->data[third]) ^ slice->reversed)
 		return (ABC);
-	if ((vec->data[0] < vec->data[2]) ^ reversed)
+	if ((vec->data[first] < vec->data[third]) ^ slice->reversed)
 		return (ACB);
 	return (BCA);
 }

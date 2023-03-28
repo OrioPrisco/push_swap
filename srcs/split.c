@@ -20,7 +20,15 @@
 #include "mod.h"
 #include "split.h"
 
+static size_t	min_st(size_t a, size_t b)
+{
+	if (a > b)
+		return (b);
+	return (a);
+}
+
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
+//FIXME pushes too much studd if get_rot(slice) > slice->size
 //calculates parameters for splitting
 //{median, to_push_top, median, to_push_bot}
 static bool	get_params(t_split_info *info, const t_sub_stack *slice)
@@ -30,12 +38,12 @@ static bool	get_params(t_split_info *info, const t_sub_stack *slice)
 	t_vector	all;
 	size_t		i;
 
-	if (vector_init(&top), vector_init(&bot), vector_init(&all), 0)
-		return (1);
-	if ((slice->size > get_rot(slice) && vector_copy_n
-			(&top, slice->stack->data, slice->size - get_rot(slice)))
+	if ((vector_init(&top), vector_init(&bot), vector_init(&all), 0)
+		|| (slice->size > get_rot(slice) && vector_copy_n(&top,
+				slice->stack->data, slice->size - get_rot(slice)))
 		|| (get_rot(slice) && vector_copy_n(&bot, slice->stack->data
-				+ (slice->stack->size - get_rot(slice)), get_rot(slice)))
+				+ (slice->stack->size - get_rot(slice)),
+				min_st(get_rot(slice), slice->size)))
 		|| vector_copy(&all, &top)
 		|| vector_append_elems(&all, bot.data, bot.size))
 		return (vector_clear(&all), vector_clear(&top), vector_clear(&bot), 1);

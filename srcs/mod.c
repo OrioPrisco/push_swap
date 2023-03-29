@@ -28,3 +28,25 @@ size_t	get_rot(const t_sub_stack *slice)
 	return (
 		minus_mod(*slice->global_rot, slice->local_rot, slice->stack->size));
 }
+
+size_t	min_st(size_t a, size_t b)
+{
+	if (a > b)
+		return (b);
+	return (a);
+}
+
+size_t	sub_stack_start(const t_sub_stack *slice)
+{
+	if (slice->stack->size == 0)
+		return (0);
+	return (minus_mod
+		(slice->stack->size, get_rot(slice), slice->stack->size));
+}
+
+size_t	sub_stack_end(const t_sub_stack *slice)
+{
+	if (slice->stack->size == 0)
+		return (0);
+	return ((sub_stack_start(slice) + slice->size) % slice->stack->size);
+}

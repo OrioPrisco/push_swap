@@ -20,13 +20,6 @@
 #include "mod.h"
 #include "split.h"
 
-static size_t	min_st(size_t a, size_t b)
-{
-	if (a > b)
-		return (b);
-	return (a);
-}
-
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 //FIXME pushes too much studd if get_rot(slice) > slice->size
 //calculates parameters for splitting

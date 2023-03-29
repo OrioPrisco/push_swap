@@ -14,10 +14,12 @@
 # define DEBUG_H
 
 typedef struct s_vector	t_vector;
+typedef struct s_sub_stack t_sub_stack;
 
 void	print_stack_ops(const t_vector *ops);
 void	print_ps_ops(const t_vector *ops);
 void	print_stacks(const t_vector *a, const t_vector *b);
 void	output_ps_ops(const t_vector *ops);
+void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b);
 
 #endif

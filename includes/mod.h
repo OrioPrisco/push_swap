@@ -19,5 +19,8 @@ typedef struct s_sub_stack	t_sub_stack;
 
 size_t	get_rot(const t_sub_stack *slice);
 size_t	minus_mod(size_t a, size_t b, size_t c);
+size_t	min_st(size_t a, size_t b);
+size_t	sub_stack_start(const t_sub_stack *slice);
+size_t	sub_stack_end(const t_sub_stack *slice);
 
 #endif

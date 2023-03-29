@@ -14,6 +14,7 @@
 #include "vector.h"
 #include "stack.h"
 #include <stddef.h>
+#include "mod.h"
 
 static const char	*g_stack_ops[] = {
 	"ROTATE_UP",
@@ -106,4 +107,39 @@ void	output_ps_ops(const t_vector *ops)
 		ft_printf("%s\n", g_ps_ops_lowercase[ops->data[i]]);
 		i++;
 	}
+}
+
+static const char * const delimiters[] = {
+"+=======+",
+"+=a strt+",
+"+=a end=+",
+"+=======+",
+"=======+\n",
+"=b strt+\n",
+"=b end=+\n",
+"=======+\n",
+};
+
+void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < a->stack->size || i < b->stack->size)
+	{
+		ft_printf(delimiters[(i == sub_stack_start(a))
+			+ ((i == sub_stack_end(a)) << 1)]);
+		ft_printf(delimiters[(i == sub_stack_start(b))
+			+ ((i == sub_stack_end(b)) << 1) + 4]);
+		if (i < a->stack->size)
+			ft_printf("| %5d ", a->stack->data[i]);
+		else
+			ft_printf("|       ");
+		if (i < b->stack->size)
+			ft_printf("| %5d |\n", b->stack->data[i]);
+		else
+			ft_printf("|       |\n");
+		i++;
+	}
+	ft_printf("+===A===+===B===+\n");
 }

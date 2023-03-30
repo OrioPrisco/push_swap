@@ -54,7 +54,6 @@ static bool	sort3_size3p(t_vector *ops, t_order3 order)
 bool	sort3(t_sub_stack *slice, t_sub_stack *other, void *_)
 {
 	t_order3	order;
-	size_t		rot;
 	size_t		first;
 	size_t		second;
 
@@ -63,9 +62,8 @@ bool	sort3(t_sub_stack *slice, t_sub_stack *other, void *_)
 		return (0);
 	if (slice->size == 2)
 	{
-		rot = get_rot(slice);
-		first = minus_mod(0, rot, slice->stack->size);
-		second = minus_mod(1, rot, slice->stack->size);
+		first = sub_stack_start(slice);
+		second = (first + 1) % slice->stack->size;
 		if ((slice->stack->data[first] > slice->stack->data[second])
 			^ slice->reversed)
 			return (unrotate(slice, other, NULL)

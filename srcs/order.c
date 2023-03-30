@@ -24,9 +24,9 @@ t_order3	get_order3(const t_sub_stack *slice)
 	const t_vector	*vec;
 
 	rot = get_rot(slice);
-	first = minus_mod(0, rot, slice->stack->size);
-	second = minus_mod(1, rot, slice->stack->size);
-	third = minus_mod(2, rot, slice->stack->size);
+	first = sub_stack_start(slice);
+	second = (first + 1) % slice->stack->size;
+	third = (second + 1) % slice->stack->size;
 	vec = slice->stack;
 	if ((vec->data[first] > vec->data[second]) ^ slice->reversed)
 	{

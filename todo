@@ -1,3 +1,7 @@
 make print substacks debug fct
 try parallelization again
-16 22 3 25 4 30 7 11 14 8 5 6 2 15 17 26 10 18 20 21 23 27 12 1 28 13 19 9 29 24 
+41 6 7 5 54 38 13 49 50 34 24 16 33 11 15 47 42 45 55 52 30 18 12 51 27 57 53 10 26 2 20 37 31 48 40 9 39 3 32 22 44 28 56 46 1 36 14 58 19 35 29 17 25 8 43 23 60 59 21 4
+
+maybe do a special split into n buckets at first and then do my own split on those buckets ?
+
+use new functions in mod.c instead of doing shaky calculations by hand !!!

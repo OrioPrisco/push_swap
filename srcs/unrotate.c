@@ -16,6 +16,7 @@
 #include "try.h"
 #include <stdlib.h>
 #include "ft_printf.h"
+#include "mod.h"
 
 //TODO : Determine best way to unrotate
 //TODO : Use rotate-or-swap if possible ?
@@ -26,14 +27,7 @@ bool	rotate_down_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (*cur->global_rot > destination)
-	{
-		if (vector_append_n(cur->ops, ROTATE_DOWN, *cur->global_rot
-				- destination))
-			return (1);
-	}
-	else if (vector_append_n(cur->ops, ROTATE_DOWN,
-			cur->stack->size - (*cur->global_rot - destination)))
+	if (vector_append_n(cur->ops, ROTATE_DOWN, get_rot(cur)))
 		return (1);
 	*cur->global_rot = destination;
 	return (0);
@@ -45,16 +39,8 @@ bool	rotate_up_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (*cur->global_rot < destination)
-	{
-		if (vector_append_n(cur->ops, ROTATE_UP, destination
-				- *cur->global_rot))
-			return (1);
-	}
-	else if (vector_append_n(cur->ops, ROTATE_UP,
-			cur->stack->size - (destination - *cur->global_rot)))
+	if (vector_append_n(cur->ops, ROTATE_UP, sub_stack_start(cur)))
 		return (1);
-	*cur->global_rot = destination;
 	return (0);
 }
 
@@ -91,8 +77,7 @@ bool	unrotate(t_sub_stack *cur, t_sub_stack *other, void *_)
 
 	zero = 0;
 	(void)_;
-	if (cur->size == cur->stack->size || *cur->global_rot % cur->stack->size
-		== cur->local_rot)
+	if (sub_stack_start(cur) == 0)
 	{
 		*cur->global_rot = cur->local_rot;
 		return (0);

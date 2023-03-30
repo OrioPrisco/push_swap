@@ -16,7 +16,7 @@
 #include <stddef.h>
 #include "mod.h"
 
-static const char	*g_stack_ops[] = {
+static const char			*g_stack_ops[] = {
 	"ROTATE_UP",
 	"ROTATE_DOWN",
 	"PUSH",
@@ -24,7 +24,7 @@ static const char	*g_stack_ops[] = {
 	"STOP_COMMIT",
 };
 
-static const char	*g_ps_ops[] = {
+static const char			*g_ps_ops[] = {
 	"SA",
 	"SB",
 	"SS",
@@ -38,7 +38,7 @@ static const char	*g_ps_ops[] = {
 	"RRR",
 };
 
-static const char	*g_ps_ops_lowercase[] = {
+static const char			*g_ps_ops_lowercase[] = {
 	"sa",
 	"sb",
 	"ss",
@@ -50,6 +50,17 @@ static const char	*g_ps_ops_lowercase[] = {
 	"rra",
 	"rrb",
 	"rrr",
+};
+
+static const char *const	g_delimiters[] = {
+	"=======+",
+	"=a strt+",
+	"=a end=+",
+	"=======+",
+	"=======+",
+	"=b strt+",
+	"=b end=+",
+	"=======+",
 };
 
 void	print_stack_ops(const t_vector *ops)
@@ -94,7 +105,7 @@ void	print_stacks(const t_vector *a, const t_vector *b)
 			ft_printf("|       |\n");
 		i++;
 	}
-	ft_printf("+===A===+===B===+\n");
+	ft_printf("+==CUR==+==OTH==+\n");
 }
 
 void	output_ps_ops(const t_vector *ops)
@@ -109,17 +120,6 @@ void	output_ps_ops(const t_vector *ops)
 	}
 }
 
-static const char * const delimiters[] = {
-"+=======+",
-"+=a strt+",
-"+=a end=+",
-"+=======+",
-"=======+\n",
-"=b strt+\n",
-"=b end=+\n",
-"=======+\n",
-};
-
 void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
 {
 	size_t	i;
@@ -127,10 +127,12 @@ void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
 	i = 0;
 	while (i < a->stack->size || i < b->stack->size)
 	{
-		ft_printf(delimiters[(i == sub_stack_start(a))
-			+ ((i == sub_stack_end(a)) << 1)]);
-		ft_printf(delimiters[(i == sub_stack_start(b))
-			+ ((i == sub_stack_end(b)) << 1) + 4]);
+		ft_printf("+");
+		ft_printf(g_delimiters[(i == sub_stack_start(a))
+			+ ((i == sub_stack_end(a)) << 1) + (!a->is_a << 2)]);
+		ft_printf(g_delimiters[(i == sub_stack_start(b))
+			+ ((i == sub_stack_end(b)) << 1) + (!b->is_a << 2)]);
+		ft_printf("\n");
 		if (i < a->stack->size)
 			ft_printf("| %5d ", a->stack->data[i]);
 		else
@@ -141,5 +143,8 @@ void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
 			ft_printf("|       |\n");
 		i++;
 	}
-	ft_printf("+===A===+===B===+\n");
+	if (a->is_a)
+		ft_printf("+===A===+===B===+\n");
+	else
+		ft_printf("+===B===+===A===+\n");
 }

@@ -16,6 +16,7 @@
 #include "sort.h"
 #include "ft_printf.h"
 
+//need to execute ops in dest first, otherwise can't properly merge it
 bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 {
 	if (dest->reversed == src->reversed)
@@ -26,6 +27,8 @@ bool	merge_stacks(t_sub_stack *dest, t_sub_stack *src)
 	if (unrotate(dest, src, NULL) || unrotate(src, dest, NULL)
 		|| vector_append_n(src->ops, PUSH, src->size))
 		return (1);
+	dest->size += src->size;
+	src->size = 0;
 	return (0);
 }
 

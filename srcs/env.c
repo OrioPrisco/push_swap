@@ -51,9 +51,9 @@ bool	init_env(int argc, char **argv, t_env *env)
 	while (i < argc)
 	{
 		nbr = ft_strtol(argv[i], &endptr, 10);
-		if (*endptr)
+		if (*endptr || (endptr != argv[i] && !ft_isdigit(*(endptr - 1))))
 			return (ft_printf
-				("Error parsing argument #%d %s\n", i, argv[i]));
+				("Error parsing argument #%d `%s`\n", i, argv[i]), 1);
 		if (vector_append(&env->a, nbr))
 			return (1);
 		i++;

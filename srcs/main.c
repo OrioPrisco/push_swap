@@ -15,8 +15,9 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include "sort.h"
-#include "debug.h"
 #include "push_swap.h"
+#include "debug.h"
+#include <unistd.h>
 
 static void	init_substack(t_sub_stack *substack, t_vector *ops, t_env *env,
 	bool is_a)
@@ -41,16 +42,14 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (0);
 	if (init_env(argc - 1, argv + 1, &env))
-		return (destroy_env(&env), 1);
+		return (write(2, "Error\n", 6), destroy_env(&env), 1);
 	init_substack(&slice, &ops, &env, true);
 	init_substack(&slice_b, &ops_b, &env, false);
 	if (sort_stacks(slice, slice_b, &env) || (cancel_ops(&env.ps_ops, 0),
 			merge_ops(&env.ps_ops), output_ps_ops(&env.ps_ops), 0))
-		ft_printf("error !\n");
-	vector_clear(&env.a);
-	vector_clear(&env.b);
+		write(2, "Error\n", 6);
+	destroy_env(&env);
 	vector_clear(slice.ops);
 	vector_clear(slice_b.ops);
-	vector_clear(&env.ps_ops);
 	return (0);
 }

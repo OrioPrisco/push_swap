@@ -24,23 +24,29 @@
 bool	rotate_down_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 {
 	size_t	destination;
+	size_t	rotation;
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (vector_append_n(cur->ops, ROTATE_DOWN, get_rot(cur)))
+	rotation = minus_mod(get_rot(cur), destination, cur->stack->size);
+	if (vector_append_n(cur->ops, ROTATE_DOWN, rotation))
 		return (1);
-	*cur->global_rot = destination;
+	*cur->global_rot = minus_mod(*cur->global_rot, rotation, cur->stack->size);
 	return (0);
 }
 
 bool	rotate_up_to(t_sub_stack *cur, t_sub_stack *other, void *param)
 {
 	size_t	destination;
+	size_t	rotation;
 
 	(void)other;
 	destination = *(size_t *)param;
-	if (vector_append_n(cur->ops, ROTATE_UP, sub_stack_start(cur)))
+	destination = minus_mod(cur->stack->size, destination, cur->stack->size);
+	rotation = minus_mod(sub_stack_start(cur), destination, cur->stack->size);
+	if (vector_append_n(cur->ops, ROTATE_UP, rotation))
 		return (1);
+	*cur->global_rot = (*cur->global_rot + rotation) % cur->stack->size;
 	return (0);
 }
 

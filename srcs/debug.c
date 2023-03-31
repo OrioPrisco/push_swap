@@ -63,6 +63,11 @@ static const char *const	g_delimiters[] = {
 	"=======+",
 };
 
+static const char *const	g_footer[] = {
+	"+===B===+===A===+\n",
+	"+===B===+===A===+\n",
+};
+
 void	print_stack_ops(const t_vector *ops)
 {
 	size_t	i;
@@ -87,27 +92,6 @@ void	print_ps_ops(const t_vector *ops)
 	}
 }
 
-void	print_stacks(const t_vector *a, const t_vector *b)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < a->size || i < b->size)
-	{
-		ft_printf("+=======+=======+\n");
-		if (i < a->size)
-			ft_printf("| %5d ", a->data[i]);
-		else
-			ft_printf("|       ");
-		if (i < b->size)
-			ft_printf("| %5d |\n", b->data[i]);
-		else
-			ft_printf("|       |\n");
-		i++;
-	}
-	ft_printf("+==CUR==+==OTH==+\n");
-}
-
 void	output_ps_ops(const t_vector *ops)
 {
 	size_t	i;
@@ -117,6 +101,32 @@ void	output_ps_ops(const t_vector *ops)
 	{
 		ft_printf("%s\n", g_ps_ops_lowercase[ops->data[i]]);
 		i++;
+	}
+}
+
+static void	check_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
+{
+	size_t	i;
+	size_t	j;
+
+	if (a->size == 0 || b->size == 0)
+		return ;
+	i = sub_stack_start(a);
+	while (1)
+	{
+		j = sub_stack_start(b);
+		while (1)
+		{
+			if ((a->stack->data[i] < b->stack->data[j]) ^ !a->is_a)
+				ft_printf("%d %c %d\n", a->stack->data[i], "<>"[a->is_a],
+					b->stack->data[j]);
+			j = (j + 1) % b->stack->size;
+			if (j == sub_stack_end(b))
+				break ;
+		}
+		i = (i + 1) % a->stack->size;
+		if (i == sub_stack_end(a))
+			break ;
 	}
 }
 
@@ -143,8 +153,6 @@ void	print_sub_stacks(const t_sub_stack *a, const t_sub_stack *b)
 			ft_printf("|       |\n");
 		i++;
 	}
-	if (a->is_a)
-		ft_printf("+===A===+===B===+\n");
-	else
-		ft_printf("+===B===+===A===+\n");
+	ft_printf(g_footer[a->is_a]);
+	check_sub_stacks(a, b);
 }

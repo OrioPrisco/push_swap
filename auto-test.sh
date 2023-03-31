@@ -9,9 +9,13 @@ do \
 	if [ $? -ne 0 ]; then
 		exit 1;
 	fi;
-	valgrind ./push_swap $ARG 2>&1 > /dev/null | grep "no leaks are possible"
+	RESULT=$(valgrind ./push_swap $ARG 2>&1 > /dev/null)
+	echo "$RESULT" | grep "no leaks are possible"
 	if [ $? -ne 0 ]; then
-		echo "leaks !";
+		exit 1;
+	fi;
+	echo "$RESULT" | grep "0 errors"
+	if [ $? -ne 0 ]; then
 		exit 1;
 	fi;
 done

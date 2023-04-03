@@ -42,6 +42,22 @@ static bool	execute_one(t_vector *a, t_vector *b, t_ps_ops op)
 	return (execute_one(a, b, RRA) || execute_one(a, b, RRB));
 }
 
+bool	execute_one_checked(t_vector *a, t_vector *b, t_ps_ops op)
+{
+	if ((op == PA || op == SB || op == RB || op == RRB) && b->size == 0)
+		return (0);
+	if ((op == PB || op == SA || op == RA || op == RRA) && a->size == 0)
+		return (0);
+	if (op == SS)
+		return (execute_one_checked(a, b, SA) || execute_one_checked(a, b, SB));
+	if (op == RR)
+		return (execute_one_checked(a, b, RA) || execute_one_checked(a, b, RB));
+	if (op == RRR)
+		return (execute_one_checked(a, b, RRA)
+			|| execute_one_checked(a, b, RRB));
+	return (execute_one(a, b, op));
+}
+
 bool	execute_ps_ops_stacks(t_sub_stack *cur, t_sub_stack *other, t_env *env)
 {
 	if (cur->is_a == other->is_a)

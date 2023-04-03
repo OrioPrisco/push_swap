@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 # include <stddef.h>
+# include "push_swap.h"
 
 typedef struct s_vector	t_vector;
 typedef struct s_env	t_env;
@@ -51,4 +52,5 @@ bool	execute_ps_ops(t_vector *a, t_vector *b, t_vector *ops,
 bool	execute_ps_ops_stacks(t_sub_stack *cur, t_sub_stack *other, t_env *env);
 bool	execute_ps_ops_env(t_env *env);
 bool	unrotate(t_sub_stack *cur, t_sub_stack *other, void *_);
+bool	execute_one_checked(t_vector *a, t_vector *b, t_ps_ops op);
 #endif

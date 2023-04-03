@@ -20,6 +20,19 @@
 #include "mod.h"
 #include "split.h"
 
+static int	count_to_push(const t_vector *vector, bool reversed, int median)
+{
+	size_t	i;
+	int		to_push;
+
+	i = 0;
+	to_push = 0;
+	while (i < vector->size)
+		if ((vector->data[i++] < median) ^ reversed)
+			to_push++;
+	return (to_push);
+}
+
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
 //calculates parameters for splitting
 //{median, to_push_top, median, to_push_bot}
@@ -28,7 +41,6 @@ static bool	get_params(t_split_info *info, const t_sub_stack *slice)
 	t_vector	top;
 	t_vector	bot;
 	t_vector	all;
-	size_t		i;
 
 	if ((vector_init(&top), vector_init(&bot), vector_init(&all), 0)
 		|| (slice->size > get_rot(slice) && vector_copy_n(&top,
@@ -43,12 +55,8 @@ static bool	get_params(t_split_info *info, const t_sub_stack *slice)
 	ft_bzero(info, 2 * sizeof(*info));
 	info[0].median = all.data[(all.size / 2)];
 	info[1].median = all.data[(all.size / 2)];
-	i = -1;
-	while (++i < top.size)
-		((top.data[i] < info[0].median) ^ slice->reversed) && info[0].push++;
-	i = -1;
-	while (++i < bot.size)
-		((bot.data[i] < info[1].median) ^ slice->reversed) && info[1].push++;
+	info[0].push = count_to_push(&top, slice->reversed, info[0].median);
+	info[1].push = count_to_push(&bot, slice->reversed, info[1].median);
 	return (vector_clear(&all), vector_clear(&top), vector_clear(&bot), 0);
 }
 

@@ -21,7 +21,6 @@
 #include "split.h"
 
 //TODO: push smallest # of elems ?/ push elems%3 if size is 4 or 5
-//FIXME pushes too much studd if get_rot(slice) > slice->size
 //calculates parameters for splitting
 //{median, to_push_top, median, to_push_bot}
 static bool	get_params(t_split_info *info, const t_sub_stack *slice)

@@ -57,4 +57,5 @@ t_vector		*vector_sort(t_vector *vector);
 t_vector		*vector_move(t_vector *dest, t_vector *src);
 size_t			vector_count_elems(t_vector *vector, t_vector_data data,
 					size_t index);
+bool			vector_is_sorted(t_vector *vector, bool ascending);
 #endif

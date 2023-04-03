@@ -52,8 +52,9 @@ LFLAGS			=	-lftprintf -Llibft -lft
 
 DEPENDS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.d,$(SRC))
 OBJS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.o,$(SRC))
+COMMANDS	:=	$(patsubst %.c,$(OBJ_FOLDER)%.cc,$(SRC))
 
-all: $(NAME)
+all: $(NAME) compile_commands.json
 
 -include $(DEPENDS)
 
@@ -65,11 +66,23 @@ bonus: all
 $(NAME): $(OBJS) $(LIBS)
 	cc $(CFLAGS) $(OBJS) $(LFLAGS) -o $@
 
+COMP_COMMAND = $(CC) -c $(CFLAGS) $(addprefix -I,$(HEADERS_FOLDER)) -MMD -MP $< -o $@
+CONCAT = awk 'FNR==1 && NR!=1 {print ","}{print}'
+
 $(OBJ_FOLDER)%.o : $(SRC_FOLDER)%.c Makefile
-	$(CC) -c $(CFLAGS) $(addprefix -I,$(HEADERS_FOLDER)) -MMD -MP $< -o $@
+	$(COMP_COMMAND)
+	printf '{\n\t"directory" : "$(shell pwd)",\n\t"command" : "$(COMP_COMMAND)",\n\t"file" : "$<"\n}' > $(OBJ_FOLDER)$*.cc
+
+#cc files are created when compiling objects
+$(OBJ_FOLDER)%.cc : $(OBJ_FOLDER)%.o
+
+compile_commands.json : $(COMMANDS) Makefile
+	echo "[" > compile_commands.json
+	$(CONCAT) $(COMMANDS) >> compile_commands.json
+	echo "]" >> compile_commands.json
 
 clean:
-	rm -f $(OBJS) $(DEPENDS)
+	rm -f $(OBJS) $(DEPENDS) $(COMMANDS) compile_commands.json
 	for lib in $(shell dirname $(LIBS)); do \
 		make -C $$lib clean; \
 	done

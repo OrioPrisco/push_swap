@@ -1,5 +1,6 @@
 *.o
 *.d
+*.cc
 push_swap
 *.swp
 *.swo
@@ -8,3 +9,4 @@ push_swap_visualizer
 imgui.ini
 .nfs*
 .gdb_history
+compile_commands.json

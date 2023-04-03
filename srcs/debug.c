@@ -25,6 +25,7 @@ static const char			*g_stack_ops[] = {
 };
 
 static const char			*g_ps_ops[] = {
+	"ERROR",
 	"SA",
 	"SB",
 	"SS",
@@ -39,6 +40,7 @@ static const char			*g_ps_ops[] = {
 };
 
 static const char			*g_ps_ops_lowercase[] = {
+	"error",
 	"sa",
 	"sb",
 	"ss",

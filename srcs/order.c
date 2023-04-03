@@ -17,13 +17,11 @@
 
 t_order3	get_order3(const t_sub_stack *slice)
 {
-	size_t			rot;
 	size_t			first;
 	size_t			second;
 	size_t			third;
 	const t_vector	*vec;
 
-	rot = get_rot(slice);
 	first = sub_stack_start(slice);
 	second = (first + 1) % slice->stack->size;
 	third = (second + 1) % slice->stack->size;

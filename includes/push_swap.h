@@ -32,6 +32,7 @@ typedef struct s_env
 
 typedef enum e_ps_ops
 {
+	ERROR,
 	SA,
 	SB,
 	SS,

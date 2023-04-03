@@ -76,7 +76,7 @@ clean:
 
 
 fclean: clean
-	rm -f client server
+	rm -f $(NAME)
 	make -C libft fclean
 
 re: fclean all

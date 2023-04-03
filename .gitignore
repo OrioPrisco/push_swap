@@ -2,6 +2,7 @@
 *.d
 *.cc
 push_swap
+checker
 *.swp
 *.swo
 checker_linux

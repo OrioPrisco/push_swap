@@ -34,7 +34,16 @@ SRC				=	main.c\
 					sub_stacks.c\
 					mod.c\
 
+BONUS_SRC		=	vector.c\
+					vector2.c\
+					vector3.c\
+					vector4.c\
+					execute.c\
+					env.c\
+					checker.c\
+
 NAME			=	push_swap
+BONUS			=	checker
 
 OBJ_FOLDER		=	objs/
 
@@ -48,18 +57,23 @@ HEADERS_FOLDER	=	includes/\
 
 LIBS			=	libft/libft.a\
 					libft/libftprintf.a\
+					libft/libgetnextline.a\
 
-LFLAGS			=	-lftprintf -Llibft -lft
+LFLAGS			=	-lftprintf -Llibft -lft -lgetnextline
 
-DEPENDS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.d,$(SRC))
+DEPENDS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.d,$(SRC) $(BONUS_SRC))
 OBJS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.o,$(SRC))
-COMMANDS	:=	$(patsubst %.c,$(OBJ_FOLDER)%.cc,$(SRC))
+BONUS_OBJS	:=	$(patsubst %.c,$(OBJ_FOLDER)%.o,$(BONUS_SRC))
+COMMANDS	:=	$(patsubst %.c,$(OBJ_FOLDER)%.cc,$(SRC) $(BONUS_SRC))
 
 all: $(NAME) compile_commands.json
 
 -include $(DEPENDS)
 
-bonus: all
+bonus: $(BONUS) compile_commands.json
+
+$(BONUS) : $(BONUS_OBJS) $(LIBS)
+	cc $(CFLAGS) $(BONUS_OBJS) $(LFLAGS) -o $@
 
 %.a:
 	make -C $(@D)

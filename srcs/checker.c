@@ -21,27 +21,27 @@
 
 t_ps_ops	str_to_op(const char *str)
 {
-	if (!ft_strcmp(str, "SA\n"))
+	if (!ft_strcmp(str, "sa\n"))
 		return (SA);
-	if (!ft_strcmp(str, "SB\n"))
+	if (!ft_strcmp(str, "sb\n"))
 		return (SB);
-	if (!ft_strcmp(str, "SS\n"))
+	if (!ft_strcmp(str, "ss\n"))
 		return (SS);
-	if (!ft_strcmp(str, "PA\n"))
+	if (!ft_strcmp(str, "pa\n"))
 		return (PA);
-	if (!ft_strcmp(str, "PB\n"))
+	if (!ft_strcmp(str, "pb\n"))
 		return (PB);
-	if (!ft_strcmp(str, "RA\n"))
+	if (!ft_strcmp(str, "ra\n"))
 		return (RA);
-	if (!ft_strcmp(str, "RB\n"))
+	if (!ft_strcmp(str, "rb\n"))
 		return (RB);
-	if (!ft_strcmp(str, "RR\n"))
+	if (!ft_strcmp(str, "rr\n"))
 		return (RR);
-	if (!ft_strcmp(str, "RRA\n"))
+	if (!ft_strcmp(str, "rra\n"))
 		return (RRA);
-	if (!ft_strcmp(str, "RRB\n"))
+	if (!ft_strcmp(str, "rrb\n"))
 		return (RRB);
-	if (!ft_strcmp(str, "RRR\n"))
+	if (!ft_strcmp(str, "rrr\n"))
 		return (RRR);
 	return (ERROR);
 }

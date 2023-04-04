@@ -55,7 +55,7 @@ static bool	duplicates(t_vector *vec)
 bool	init_env(int argc, char **argv, t_env *env)
 {
 	char			*endptr;
-	int				nbr;
+	long			nbr;
 	unsigned int	i;
 
 	if (argc == 1)
@@ -67,10 +67,11 @@ bool	init_env(int argc, char **argv, t_env *env)
 	while (*argv)
 	{
 		nbr = ft_strtol(*argv, &endptr, 10);
-		if (*endptr || (endptr != *argv && !ft_isdigit(*(endptr - 1))))
+		if (*endptr || (endptr != *argv && !ft_isdigit(*(endptr - 1)))
+			|| ft_strtol_check_int(*argv, endptr, nbr))
 			return (ft_printf("Error parsing argument #%u `%s`\n", i + 1, *argv),
 				free_argv(argc, argv - i), 1);
-		if (vector_append(&env->a, nbr))
+		if (vector_append(&env->a, (int)nbr))
 			return (free_argv(argc, argv - i), 1);
 		i++;
 		argv++;

@@ -15,6 +15,18 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+static void	free_argv(int argc, char **tab)
+{
+	char	**tab2;
+
+	if (argc != 1)
+		return ;
+	tab2 = tab;
+	while (*tab)
+		free(*tab++);
+	free(tab2);
+}
+
 static bool	duplicates(t_vector *vec)
 {
 	t_vector	sorted;
@@ -42,22 +54,28 @@ static bool	duplicates(t_vector *vec)
 
 bool	init_env(int argc, char **argv, t_env *env)
 {
-	char	*endptr;
-	int		nbr;
-	int		i;
+	char			*endptr;
+	int				nbr;
+	unsigned int	i;
 
+	if (argc == 1)
+		argv = ft_split(argv[0], ' ');
+	if (argc == 1 && !argv)
+		return (1);
 	i = 0;
 	ft_bzero(env, sizeof(*env));
-	while (i < argc)
+	while (*argv)
 	{
-		nbr = ft_strtol(argv[i], &endptr, 10);
-		if (*endptr || (endptr != argv[i] && !ft_isdigit(*(endptr - 1))))
-			return (ft_printf
-				("Error parsing argument #%d `%s`\n", i, argv[i]), 1);
+		nbr = ft_strtol(*argv, &endptr, 10);
+		if (*endptr || (endptr != *argv && !ft_isdigit(*(endptr - 1))))
+			return (ft_printf("Error parsing argument #%u `%s`\n", i, *argv),
+				free_argv(argc, argv - i), 1);
 		if (vector_append(&env->a, nbr))
-			return (1);
+			return (free_argv(argc, argv - i), 1);
 		i++;
+		argv++;
 	}
+	free_argv(argc, argv - i);
 	return (duplicates(&env->a));
 }
 

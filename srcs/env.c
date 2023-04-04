@@ -58,12 +58,12 @@ bool	init_env(int argc, char **argv, t_env *env)
 	long			nbr;
 	unsigned int	i;
 
+	ft_bzero(env, sizeof(*env));
 	if (argc == 1)
 		argv = ft_split(argv[0], ' ');
-	if (argc == 1 && !argv)
-		return (1);
+	if (argc == 1 && (!argv || !*argv))
+		return (free_argv(argc, argv), 1);
 	i = 0;
-	ft_bzero(env, sizeof(*env));
 	while (*argv)
 	{
 		nbr = ft_strtol(*argv, &endptr, 10);

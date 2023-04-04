@@ -56,7 +56,7 @@ int	main(int argc, char **argv)
 		return (0);
 	if (init_env(argc - 1, argv + 1, &env))
 		return (write(2, "Error\n", 6), 1);
-	command = get_next_line(1);
+	command = get_next_line(0);
 	while (command)
 	{
 		op = str_to_op(command);
@@ -65,7 +65,7 @@ int	main(int argc, char **argv)
 		if (execute_one_checked(&env.a, &env.b, op))
 			return (write(2, "Error\n", 6), destroy_env(&env), 1);
 		free(command);
-		command = get_next_line(1);
+		command = get_next_line(0);
 	}
 	if (env.b.size != 0 || !vector_is_sorted(&env.a, true))
 		ft_printf("KO\n");

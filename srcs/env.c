@@ -68,7 +68,7 @@ bool	init_env(int argc, char **argv, t_env *env)
 	{
 		nbr = ft_strtol(*argv, &endptr, 10);
 		if (*endptr || (endptr != *argv && !ft_isdigit(*(endptr - 1))))
-			return (ft_printf("Error parsing argument #%u `%s`\n", i, *argv),
+			return (ft_printf("Error parsing argument #%u `%s`\n", i + 1, *argv),
 				free_argv(argc, argv - i), 1);
 		if (vector_append(&env->a, nbr))
 			return (free_argv(argc, argv - i), 1);

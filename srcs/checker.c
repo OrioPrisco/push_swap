@@ -61,9 +61,9 @@ int	main(int argc, char **argv)
 	{
 		op = str_to_op(command);
 		if (op == ERROR)
-			return (write(2, "Error\n", 6), destroy_env(&env), 1);
+			return (write(2, "Error\n", 6), destroy_env(&env), free(command), 1);
 		if (execute_one_checked(&env.a, &env.b, op))
-			return (write(2, "Error\n", 6), destroy_env(&env), 1);
+			return (write(2, "Error\n", 6), destroy_env(&env), free(command), 1);
 		free(command);
 		command = get_next_line(0);
 	}

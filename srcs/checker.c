@@ -55,7 +55,7 @@ int	main(int argc, char **argv)
 	if (argc == 1)
 		return (0);
 	if (init_env(argc - 1, argv + 1, &env))
-		return (write(2, "Error\n", 6), 1);
+		return (write(2, "Error\n", 6), destroy_env(&env), 1);
 	command = get_next_line(0);
 	while (command)
 	{
